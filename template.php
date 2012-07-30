@@ -33,8 +33,10 @@ function handleReturn(returnedObject){
 function postAnswer(clicked){
 		var term = $('h1').data('term'),
 		answer = $(clicked).data('answer'),
+		set = $('h1').data('set'),
 	 data = { term: term,
-			answer : answer
+			answer : answer,
+			set : set
 	};
 		$.ajax({
 	type: "POST",
@@ -42,7 +44,7 @@ function postAnswer(clicked){
 	data: data,
 	dataType: "text",
 	success: function(returnedObject){
-		//console.log(returnedObject);
+		console.log(returnedObject);
 		handleReturn(returnedObject);
 	}
 	});
