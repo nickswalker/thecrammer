@@ -11,8 +11,8 @@ class Crammer
 	}
 	function storeAnswer($term, $answer){
 
-		if(file_exists('store.xml')){
-			$terms_xml = simplexml_load_file('store.xml');
+		if(file_exists('cache/'.$this->vars['set'].'.xml')){
+			$terms_xml = simplexml_load_file('cache/'.$this->vars['set'].'.xml');
 			//If correct, increment the counter for that term
 			if($answer){
 				echo '<span class="return-message">Correct</span>';
@@ -25,7 +25,7 @@ class Crammer
 			}
 			$this->showTest();
 		}
-		$terms_xml->asXML('store.xml');
+		$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
 		
 	}
 	function initialize(){
@@ -34,6 +34,9 @@ class Crammer
 	}
 	elseif( isset($_POST['set']) ){
 		$this->pickSet($_POST['set']);
+	}
+	else {
+		return false;
 	}
 	$this->setVars();
 	if (isset($_POST['answer']) && isset($_POST['term']) ) {
@@ -84,7 +87,7 @@ class Crammer
 	}
 	function setVars(){
 
-		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count();
+		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['incorrect_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['test_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
@@ -92,7 +95,7 @@ class Crammer
 		$this->vars['correct_definition'] = (string)$this->vars['test_term']->definition;
 		$this->vars['incorrect_term'] = $this->vars['terms_xml']->term[$this->vars['incorrect_index']];
 		$this->vars['incorrect_definition'] = (string)$this->vars['incorrect_term']->definition;
-		//print_r($this->vars);
+		
 	}
 }
 ?>

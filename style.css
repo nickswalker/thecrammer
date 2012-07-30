@@ -60,10 +60,10 @@ a:active {color:#555;}  /* selected link */
 
 
 ::selection {
-	background: #BADA55; /* Safari */
+	background: #CCC; /* Safari */
 	}
 ::-moz-selection {
-	background: #BADA55; /* Firefox */
+	background: #CCC; /* Firefox */
 }
 
 body {
@@ -73,6 +73,7 @@ body {
 	position: relative;
 	min-height: 500px;
 }
+
 #content	{
 	margin: 15px 0 24px 0;
 	overflow: auto;
@@ -164,4 +165,10 @@ form {
 	pointer-events: none;
 	background-image: -webkit-linear-gradient(bottom, #ffffff 0px, rgba(255,255,255,0) 150px);
 	z-index: 1;
+}
+.correct a[data-answer='0']{
+	text-decoration: line-through;
+}
+.correct a, .incorrect a	{
+	pointer-events: none;
 }

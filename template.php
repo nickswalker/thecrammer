@@ -44,7 +44,7 @@ function postAnswer(clicked){
 	data: data,
 	dataType: "text",
 	success: function(returnedObject){
-		console.log(returnedObject);
+		//console.log(returnedObject);
 		handleReturn(returnedObject);
 	}
 	});
@@ -57,13 +57,7 @@ function postAnswer(clicked){
 
         <div id="content">
 	   
-	<?php 
-
-
-
-?>
-<?php $this->showTest(); ?>
-
+	        <?php $this->showTest(); ?>
 
         </div>
 
