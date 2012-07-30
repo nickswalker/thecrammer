@@ -3,10 +3,10 @@ class Crammer
 {			
 	function showTest(){
 		if(rand(0,1)){
-		echo( $this->vars['test_term_name'].'<a class="button left" href="?term='.$this->vars['correct_index'].'&answer=1">'.$this->vars['correct_definition'].'</a><a class="button right" href="?term='.$this->vars['correct_index'].'&answer=0">'.$this->vars['incorrect_definition'].'</a>');
+		echo( '<div class="test"><h1 data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1><a class="button left" data-answer="1" href="">'.$this->vars['correct_definition'].'</a><a class="button right" data-answer="0" href="">'.$this->vars['incorrect_definition'].'</a></div>');
 		}
 		else{
-			echo( $this->vars['test_term_name'].'<a class="button left" href="?term='.$this->vars['correct_index'].'&answer=0">'.$this->vars['incorrect_definition'].'</a><a class="button right" href="?term='.$this->vars['correct_index'].'&answer=1">'.$this->vars['correct_definition'].'</a>');
+			echo( '<div class="test"><h1 data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1><a class="button left" data-answer="0" href="">'.$this->vars['incorrect_definition'].'</a><a class="button right" data-answer="1" href="">'.$this->vars['correct_definition'].'</a></div>');
 		}
 	}
 	function storeAnswer($term, $answer){
@@ -15,20 +15,28 @@ class Crammer
 			$terms_xml = simplexml_load_file('store.xml');
 			//If correct, increment the counter for that term
 			if($answer){
+				echo '<span class="return-message">Correct</span>';
 				 $terms_xml->term[(int)$term]->counter = ++$terms_xml->term[(int)$term]->counter;
 				
 			}
 			else{
+				echo '<span class="return-message">Incorrect</span>';
 				$terms_xml->term[(int)$term]->counter = --$terms_xml->term[(int)$term]->counter;
 			}
+			$this->showTest();
 		}
 		$terms_xml->asXML('store.xml');
-
+		
 	}
 	function initialize(){
-	if (isset($_GET['answer']) && isset($_GET['term']) ) {
-		$this->storeAnswer($_GET['term'],$_GET['answer']);
+	if (isset($_POST['answer']) && isset($_POST['term']) ) {
+		$this->storeAnswer($_POST['term'],$_POST['answer']);
+		return  true;
 	}
+	require('template.php');
+	
+	}
+	function setVars(){
 	/*
 		$ch = curl_init('https://api.quizlet.com/2.0/sets/12226611?access_token=NGY0M2U2NjRiYTMyYzZmYmYzYmQwMDBkYjY4NzFm&whitespace=1');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -60,6 +68,7 @@ class Crammer
 			$terms_xml->asXML('store.xml');
 		
 		}
+
 		$this->vars['number_of_terms'] = $terms_xml->term->count();
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['incorrect_index'] =  rand(0,$this->vars['number_of_terms']);
