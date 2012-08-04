@@ -10,7 +10,11 @@ class Crammer
 		}
 	}
 	function showPicker(){
-		
+		echo '<h1>crammer</h1><form method="get" action="index.php"><input type="text" placeholder="Quizlet Set ID" name="set"></input>
+		</form>';
+	}
+	function showError(){
+		require('error.php');
 	}
 	function storeAnswer($term, $answer, $slow){
 
@@ -38,21 +42,23 @@ class Crammer
 	}
 	function initialize(){
 	if ( isset($_GET['set'])  ) {
-		$this->pickSet($_GET['set']);
+		$temp_success = $this->pickSet($_GET['set']);
 	}
 	elseif( isset($_POST['set']) ){
-		$this->pickSet($_POST['set']);
+		$temp_success = $this->pickSet($_POST['set']);
 	}
 	else {
-		showPicker();
+		require('picker.php');
+		return false;
 	}
-	$this->setVars();
-	if (isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
-		$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
-		return  true;
+	if ($temp_success){
+		$this->setVars();
+		if (isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
+			$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
+			return  true;
+		}
+		require('template.php');
 	}
-	require('template.php');
-	
 	}
 	function pickSet($id){
 	$this->vars['set'] = $id;
@@ -76,7 +82,10 @@ class Crammer
 			else{
 				return false;
 			}
-			
+			if(!$terms){
+				$this->showError();
+				return false;
+			}
 			$xmlstr = "<?xml version='1.0' ?><terms></terms>";
 			$terms_xml = new SimpleXMLElement($xmlstr);
 			foreach ($terms as $term) {
@@ -90,6 +99,7 @@ class Crammer
 			}
 			$terms_xml->asXML('cache/'.$id.'.xml');
 			$this->vars['terms_xml'] = $terms_xml;
+			return true;
 			
 		}
 	}
