@@ -11,44 +11,60 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	var $currentTest = $('.test').addClass('current');
+	var $currentTest = $('.test').addClass('current'),
+	slow = false;
+	startTimer();
 	$('body').on('click', 'a', function(event){
 			event.preventDefault();
 		postAnswer(this);
 	});
-function handleReturn(returnedObject){
+	
+	function handleReturn(returnedObject){
 		$('.test').removeClass('current');
 		$('#content').prepend(returnedObject);
-		if($('.return-message').text() == 'Correct'){
-			$currentTest.addClass('correct');
-		}
-		else{
+
+		if($('.return-message').text() == 'Inorrect'){
 			$currentTest.addClass('incorrect');
 		}
+		else{
+			if (slow)	{
+				$currentTest.addClass('slow');
+			}
+			else{
+				$currentTest.addClass('correct');
+			}
+		}
+	
 		$('.return-message').remove();
 		$currentTest = $('.test').first().addClass('current');
-		};
+		startTimer();
+		
+	};
+	function startTimer ()	{
+		slow = false;
+		setTimeout(function(){ slow = true;},5000);
+	}
 
-
-function postAnswer(clicked){
+	function postAnswer(clicked){
 		var term = $('h1').data('term'),
 		answer = $(clicked).data('answer'),
 		set = $('h1').data('set'),
-	 data = { term: term,
-			answer : answer,
-			set : set
-	};
+		 data = { term: term,
+				answer : answer,
+				set : set,
+				slow : slow
+		};
 		$.ajax({
-	type: "POST",
-	url: "index.php",
-	data: data,
-	dataType: "text",
-	success: function(returnedObject){
-		//console.log(returnedObject);
-		handleReturn(returnedObject);
+			type: "POST",
+			url: "index.php",
+			data: data,
+			dataType: "text",
+			success: function(returnedObject){
+				//console.log(returnedObject);
+				handleReturn(returnedObject);
+			}
+		});
 	}
-	});
-}
 });
 </script>
   </head>

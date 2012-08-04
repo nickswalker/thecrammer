@@ -9,19 +9,27 @@ class Crammer
 			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1><a class="button left" data-answer="0" href="">'.$this->vars['incorrect_definition'].'</a><a class="button right" data-answer="1" href="">'.$this->vars['correct_definition'].'</a></div>');
 		}
 	}
-	function storeAnswer($term, $answer){
+	function showPicker(){
+		
+	}
+	function storeAnswer($term, $answer, $slow){
 
 		if(file_exists('cache/'.$this->vars['set'].'.xml')){
 			$terms_xml = simplexml_load_file('cache/'.$this->vars['set'].'.xml');
 			//If correct, increment the counter for that term
-			if($answer){
-				echo '<span class="return-message">Correct</span>';
-				 $terms_xml->term[(int)$term]->counter = ++$terms_xml->term[(int)$term]->counter;
-				
+			if(!$answer){
+				echo '<span class="return-message">Incorrect</span>';
+				$terms_xml->term[(int)$term]->counter = --$terms_xml->term[(int)$term]->counter;	
 			}
 			else{
-				echo '<span class="return-message">Incorrect</span>';
-				$terms_xml->term[(int)$term]->counter = --$terms_xml->term[(int)$term]->counter;
+				echo '<span class="return-message">Correct</span>';
+				if($slow){
+					$terms_xml->term[(int)$term]->counter = $terms_xml->term[(int)$term]->counter - .5;
+				}
+				else{
+					$terms_xml->term[(int)$term]->counter = ++$terms_xml->term[(int)$term]->counter;
+				}
+
 			}
 			$this->showTest();
 		}
@@ -36,11 +44,11 @@ class Crammer
 		$this->pickSet($_POST['set']);
 	}
 	else {
-		return false;
+		showPicker();
 	}
 	$this->setVars();
-	if (isset($_POST['answer']) && isset($_POST['term']) ) {
-		$this->storeAnswer($_POST['term'],$_POST['answer']);
+	if (isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
+		$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
 		return  true;
 	}
 	require('template.php');

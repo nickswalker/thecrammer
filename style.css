@@ -151,10 +151,13 @@ form {
 	opacity: 1;
 }
 .correct	{
-	border-left: 8px solid #BADA55;
+	border-color: #BADA55;
 }
 .incorrect	{
-	border-left: 8px solid #da5555;
+	border-color: #da5555;
+}
+.slow	{
+	border-color: #FFD400;
 }
 #content::before{
 	width: 100%;
@@ -166,9 +169,9 @@ form {
 	background-image: -webkit-linear-gradient(bottom, #ffffff 0px, rgba(255,255,255,0) 150px);
 	z-index: 1;
 }
-.correct a[data-answer='0']{
+.test:not(.current) a[data-answer='0']{
 	text-decoration: line-through;
 }
-.correct a, .incorrect a	{
+.test:not(.current) a	{
 	pointer-events: none;
 }
