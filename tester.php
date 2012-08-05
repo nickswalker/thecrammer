@@ -11,12 +11,16 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+
 	var $currentTest = $('.test').addClass('current'),
 	$rightCounter = $('.right'),
 	$wrongCounter = $('.wrong'),
+	$crammerData = $(document.body).data(),
 	slow = false,
 	timer = null;
+	
 	getQuestions();
+	
 	$('body').on('click', 'a', function(event){
 		event.preventDefault();
 		clearTimeout(timer);
@@ -32,20 +36,18 @@ $(document).ready(function() {
 			$wrongCounter.text(String($wrongCounter.data().counter));
 		}
 	}
-	function handleReturn(returnedObject){
 
-		
-	};
 	function startTimer ()	{
 		clearTimeout(timer);
 		slow = false;
-		timer = setTimeout(function(){ slow = true;},10000);
+		allowedTime = ($crammerData.choices * 500) + 6000;
+		timer = setTimeout(function(){ slow = true;},allowedTime);
 	}
 	function getQuestions()	{
 		
 		var numberOfQuestions = 1,
-		numberOfChoices = 2,
-		set = 'psat',
+		numberOfChoices = $crammerData.choices,
+		set = $crammerData.set,
 		 data = { questions : numberOfQuestions,
 				choices : numberOfChoices,
 				set : set
@@ -82,22 +84,19 @@ $(document).ready(function() {
 	
 		var testData = $clicked.siblings('h1').data(),
 		term = testData.term,
-		answer = testData.answer,
-		set = testData.set,
+		answer = $clicked.data().answer,
+		set = $crammerData.set,
 		 data = { term: term,
 				answer : answer,
 				set : set,
 				slow : slow
 		};
-
 		$.ajax({
 			type: "POST",
 			url: "index.php",
 			data: data,
 			dataType: "text",
 			success: function(returnedObject){
-				console.log(returnedObject);
-				handleReturn(returnedObject);
 			}
 		});
 	}
@@ -105,18 +104,13 @@ $(document).ready(function() {
 </script>
   </head>
 
-  <body>
-	  <ul class="stats">
-	  <li class="right" data-counter="0">0</li>
-	  <li class="wrong" data-counter="0">0</li>
-	  </ul>
-        <div id="content">
-	   
-	       
+<body data-set="<?php echo $this->vars['set']; ?>" data-choices="<?php if (isset($_GET['choices'])){ echo $_GET['choices']; } else {echo 2;}?>">
+	<ul class="stats">
+		<li class="right" data-counter="0">0</li>
+		<li class="wrong" data-counter="0">0</li>
+	</ul>
+	<div id="content">
+	</div>
 
-        </div>
-
-    
-
-  </body>
+</body>
 </html>

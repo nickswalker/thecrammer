@@ -14,7 +14,12 @@
 
         <div id="content">
 	   
-	        <?php $this->showPicker(); ?>
+	       <h1>crammer</h1>
+	       <form method="get" action="index.php">
+	       <input type="text" placeholder="Quizlet Set ID" name="set" required></input>
+	       <input type="number" name="choices" placeholder="Number of Choices" required min="2" max="6"></input>
+	       <input type="submit"></input>
+		</form>
 
         </div>
 

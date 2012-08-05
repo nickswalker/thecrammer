@@ -5,10 +5,6 @@ class Crammer
 		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
 		
 	}
-	function showPicker(){
-		echo '<h1>crammer</h1><form method="get" action="index.php"><input type="text" placeholder="Quizlet Set ID" name="set" required></input><input type="number" name="choices" placeholder="Number of Choices"></input>
-		</form>';
-	}
 	function generateChoices($numberOfChoices = 2){
 	
 		$correctSpot = rand(1,(int)$numberOfChoices);
@@ -47,7 +43,6 @@ class Crammer
 				}
 
 			}
-			$this->showTest();
 		}
 		$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
 		
@@ -65,19 +60,23 @@ class Crammer
 	}
 	if ($temp_success){
 		$this->setVars();
+		// Store an answer if we get the relevant data
 		if ( isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
 			$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
-			return  true;
+			return false;
 		}
-		if ( isset($_POST['questions']) && isset($_POST['choices']) ) {
+		// Generate a question if we get the relevant data
+		elseif ( isset($_POST['questions']) && isset($_POST['choices']) ) {
 			$this->generateQuestions($_POST['questions'],$_POST['choices']);
-			return  true;
+			return false;
 		}
-		require('tester.php');
+		else{
+			require('tester.php');
+		}
 	}
 	}
 	function pickSet($id){
-	$this->vars['set'] = $id;
+		$this->vars['set'] = $id;
 		if( file_exists('cache/'.$id.'.xml') ){
 			$terms_xml = simplexml_load_file('cache/'.$id.'.xml');
 			$this->vars['terms_xml'] = $terms_xml;
@@ -120,7 +119,7 @@ class Crammer
 		}
 	}
 	function setVars(){
-
+		
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['test_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
