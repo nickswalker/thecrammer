@@ -12,7 +12,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	var $currentTest = $('.test').addClass('current'),
-	slow = false;
+	slow = false,
+	timer = null;
 	startTimer();
 	$('body').on('click', 'a', function(event){
 			event.preventDefault();
@@ -23,7 +24,7 @@ $(document).ready(function() {
 		$('.test').removeClass('current');
 		$('#content').prepend(returnedObject);
 
-		if($('.return-message').text() == 'Inorrect'){
+		if($('.return-message').text() == 'Incorrect'){
 			$currentTest.addClass('incorrect');
 		}
 		else{
@@ -41,8 +42,9 @@ $(document).ready(function() {
 		
 	};
 	function startTimer ()	{
+		clearTimeout(timer);
 		slow = false;
-		setTimeout(function(){ slow = true;},5000);
+		timer = setTimeout(function(){ slow = true;},5000);
 	}
 
 	function postAnswer(clicked){
