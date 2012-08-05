@@ -175,3 +175,32 @@ form {
 .test:not(.current) a	{
 	pointer-events: none;
 }
+
+
+/* = Stats
+-------------------------------------------------------------- */
+
+.stats	{
+	position: absolute;
+	top: 0;
+	left: -80px;
+	padding-top: 12px;
+}
+.stats li{
+	padding: 0px 5px;
+	border: 1px solid 
+	rgba(0,0,0,.075);
+	color: 
+	rgba(0,0,0,.2);
+	text-shadow: none;
+	border-radius: 3px;
+	line-height: 1.5;
+	font-weight: 100;
+	margin-right: 5px;
+	display: inline-block;
+}
+/*
+.stats li::before	{
+	content: attr(data-counter);
+}
+*/

@@ -12,6 +12,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	var $currentTest = $('.test').addClass('current'),
+	$rightCounter = $('.right'),
+	$wrongCounter = $('.wrong'),
 	slow = false,
 	timer = null;
 	startTimer();
@@ -19,20 +21,29 @@ $(document).ready(function() {
 			event.preventDefault();
 		postAnswer(this);
 	});
-	
+	function updateStats(isCorrect){
+		if(isCorrect){
+			$rightCounter.data().counter++;
+			$rightCounter.text(String($rightCounter.data().counter));
+		}
+		else{
+			$wrongCounter.data().counter++;
+			$wrongCounter.text(String($wrongCounter.data().counter));
+		}
+	}
 	function handleReturn(returnedObject){
 		$('.test').removeClass('current');
 		$('#content').prepend(returnedObject);
 
 		if($('.return-message').text() == 'Incorrect'){
 			$currentTest.addClass('incorrect');
+			updateStats(0);
 		}
 		else{
+			$currentTest.addClass('correct');
+			updateStats(1);
 			if (slow)	{
 				$currentTest.addClass('slow');
-			}
-			else{
-				$currentTest.addClass('correct');
 			}
 		}
 	
@@ -72,7 +83,10 @@ $(document).ready(function() {
   </head>
 
   <body>
-
+	  <ul class="stats">
+	  <li class="right" data-counter="0"></li>
+	  <li class="wrong" data-counter="0"></li>
+	  </ul>
         <div id="content">
 	   
 	        <?php $this->showTest(); ?>
