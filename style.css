@@ -188,10 +188,8 @@ form {
 }
 .stats li{
 	padding: 0px 5px;
-	border: 1px solid 
-	rgba(0,0,0,.075);
-	color: 
-	rgba(0,0,0,.2);
+	border: 1px solid rgba(0,0,0,.075);
+	color: rgba(0,0,0,.2);
 	text-shadow: none;
 	border-radius: 3px;
 	line-height: 1.5;

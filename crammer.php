@@ -1,15 +1,15 @@
 <?php
 class Crammer
 {			
-	function showTest(){
-		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1>'. $this->generateAnswers(2) .'</div>');
+	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 2){
+		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
 		
 	}
 	function showPicker(){
-		echo '<h1>crammer</h1><form method="get" action="index.php"><input type="text" placeholder="Quizlet Set ID" name="set"></input>
+		echo '<h1>crammer</h1><form method="get" action="index.php"><input type="text" placeholder="Quizlet Set ID" name="set" required></input><input type="number" name="choices" placeholder="Number of Choices"></input>
 		</form>';
 	}
-	function generateAnswers($numberOfChoices){
+	function generateChoices($numberOfChoices = 2){
 	
 		$correctSpot = rand(1,(int)$numberOfChoices);
 		for ($i = 1; $i <= $numberOfChoices; $i++)	{
@@ -36,13 +36,11 @@ class Crammer
 			$terms_xml = simplexml_load_file('cache/'.$this->vars['set'].'.xml');
 			//If correct, increment the counter for that term
 			if(!$answer){
-				echo '<span class="return-message">Incorrect</span>';
 				$terms_xml->term[(int)$term]->counter = --$terms_xml->term[(int)$term]->counter;	
 			}
 			else{
-				echo '<span class="return-message">Correct</span>';
 				if($slow){
-					$terms_xml->term[(int)$term]->counter = $terms_xml->term[(int)$term]->counter - .5;
+					/* $terms_xml->term[(int)$term]->counter = $terms_xml->term[(int)$term]->counter - .5; */
 				}
 				else{
 					$terms_xml->term[(int)$term]->counter = ++$terms_xml->term[(int)$term]->counter;
@@ -67,11 +65,15 @@ class Crammer
 	}
 	if ($temp_success){
 		$this->setVars();
-		if (isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
+		if ( isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
 			$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
 			return  true;
 		}
-		require('template.php');
+		if ( isset($_POST['questions']) && isset($_POST['choices']) ) {
+			$this->generateQuestions($_POST['questions'],$_POST['choices']);
+			return  true;
+		}
+		require('tester.php');
 	}
 	}
 	function pickSet($id){
