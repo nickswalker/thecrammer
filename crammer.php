@@ -2,16 +2,30 @@
 class Crammer
 {			
 	function showTest(){
-		if(rand(0,1)){
-		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1><a class="button left" data-answer="1" href="">'.$this->vars['correct_definition'].'</a><a class="button right" data-answer="0" href="">'.$this->vars['incorrect_definition'].'</a></div>');
-		}
-		else{
-			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1><a class="button left" data-answer="0" href="">'.$this->vars['incorrect_definition'].'</a><a class="button right" data-answer="1" href="">'.$this->vars['correct_definition'].'</a></div>');
-		}
+		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1>'. $this->generateAnswers(2) .'</div>');
+		
 	}
 	function showPicker(){
 		echo '<h1>crammer</h1><form method="get" action="index.php"><input type="text" placeholder="Quizlet Set ID" name="set"></input>
 		</form>';
+	}
+	function generateAnswers($numberOfChoices){
+	
+		$correctSpot = rand(1,(int)$numberOfChoices);
+		for ($i = 1; $i <= $numberOfChoices; $i++)	{
+			if($i == $correctSpot){
+				$output .= '<a class="button" data-answer="1" href="">'. $this->vars['correct_definition'] .'</a>';
+			}
+			else{
+				$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
+				if ($temp_incorrect_index == $this->vars['correct_index']){
+					$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
+				}
+				$temp_incorrect_definition = (string)$this->vars['terms_xml']->term[$temp_incorrect_index]->definition;
+				$output .= '<a class="button" data-answer="0" href="">'.$temp_incorrect_definition.'</a>';
+			}
+		}
+		return $output;
 	}
 	function showError(){
 		require('error.php');
@@ -107,12 +121,10 @@ class Crammer
 
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
-		$this->vars['incorrect_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['test_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
 		$this->vars['test_term_name'] = (string)$this->vars['test_term']->name;
 		$this->vars['correct_definition'] = (string)$this->vars['test_term']->definition;
-		$this->vars['incorrect_term'] = $this->vars['terms_xml']->term[$this->vars['incorrect_index']];
-		$this->vars['incorrect_definition'] = (string)$this->vars['incorrect_term']->definition;
+
 		
 	}
 }

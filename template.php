@@ -84,8 +84,8 @@ $(document).ready(function() {
 
   <body>
 	  <ul class="stats">
-	  <li class="right" data-counter="0"></li>
-	  <li class="wrong" data-counter="0"></li>
+	  <li class="right" data-counter="0">0</li>
+	  <li class="wrong" data-counter="0">0</li>
 	  </ul>
         <div id="content">
 	   
