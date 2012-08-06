@@ -138,7 +138,9 @@ form {
 .test{
 	padding-left: 16px;
 	border-left: 8px solid rgba(255,255,255,0);
-	-webkit-transition: 1s;
+	-webkit-transition-property: border, opacity;
+	-webkit-transition-duration: .2s, .2s;
+	
 	opacity: .2;
 }
 .test a 	{
@@ -149,6 +151,7 @@ form {
 }
 .current{
 	opacity: 1;
+	
 }
 .correct	{
 	border-color: #BADA55;

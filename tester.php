@@ -17,15 +17,48 @@ $(document).ready(function() {
 	$wrongCounter = $('.wrong'),
 	$crammerData = $(document.body).data(),
 	slow = false,
+	slowToggled = false,
+	wrongToggled = false,
 	timer = null;
-	
+
 	getQuestions();
-	
+		$('body').keyup(function (event) {
+					switch (event.keyCode) {
+						case 87: toggleWrong();
+
+						break;
+						case 83: toggleSlow();
+
+						break;
+						default: 
+						break;
+					}
+				});
+	function toggleWrong(){
+		if(slowToggled){
+			$('.incorrect').slideToggle(200);
+			wrongToggled = !wrongToggled;
+			return true;
+		}
+		$('.correct').slideToggle(200);
+		wrongToggled = !wrongToggled;
+	}
+	function toggleSlow(){
+		if(wrongToggled){
+			$('.slow').slideToggle(200);
+			slowToggled = !slowToggled;
+			return true;
+		}
+		$('.correct:not(.slow), .incorrect').slideToggle(200);
+		slowToggled = !slowToggled;
+	}
+
 	$('body').on('click', 'a', function(event){
 		event.preventDefault();
 		clearTimeout(timer);
 		postAnswer($(this));
 	});
+
 	function updateStats(isCorrect){
 		if(isCorrect){
 			$rightCounter.data().counter++;
@@ -59,9 +92,9 @@ $(document).ready(function() {
 			data: data,
 			dataType: "text",
 			success: function(returnedObject){
-				$('#content').prepend(returnedObject);
+				$('#content').prepend($(returnedObject).hide());
 				$('.test').removeClass('current');
-					$currentTest = $('.test').first().addClass('current');
+					$currentTest = $('.test').first().addClass('current').slideToggle(200);
 					startTimer();
 			}
 		});
