@@ -1,14 +1,14 @@
 <?php
 class Crammer
-{			
+{
 	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 2){
 		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-term="'.$this->vars['correct_index'].'">'.$this->vars['test_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
-		
+
 	}
 	function generateChoices($numberOfChoices = 2){
-	
+
 		$correctSpot = rand(1,(int)$numberOfChoices);
-		for ($i = 1; $i <= $numberOfChoices; $i++)	{
+		for ($i = 1; $i <= $numberOfChoices; $i++) {
 			if($i == $correctSpot){
 				$output .= '<a class="button" data-answer="1" href="">'. $this->vars['correct_definition'] .'</a>';
 			}
@@ -26,10 +26,10 @@ class Crammer
 	function showError(){
 		require('error.php');
 	}
-	function storeAnswer($term, $answer, $slow){	
+	function storeAnswer($term, $answer, $slow){
 		//If correct, increment the counter for that term
 		if(!$answer){
-			$this->vars['terms_xml']->term[(int)$term]->counter = --$this->vars['terms_xml']->term[(int)$term]->counter;	
+			$this->vars['terms_xml']->term[(int)$term]->counter = --$this->vars['terms_xml']->term[(int)$term]->counter;
 		}
 		else{
 			if($slow){
@@ -39,7 +39,7 @@ class Crammer
 			else{
 				$this->vars['terms_xml']->term[(int)$term]->counter = ++$this->vars['terms_xml']->term[(int)$term]->counter;
 			}
-		
+
 		}
 		$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
 		return true;
@@ -65,7 +65,7 @@ class Crammer
 			// Generate a question if we get the relevant data
 			elseif ( isset($_POST['questions']) && isset($_POST['choices']) ) {
 				$this->generateQuestions($_POST['questions'],$_POST['choices']);
-				return false; 
+				return false;
 			}
 			else{
 				require('tester.php');
@@ -80,14 +80,14 @@ class Crammer
 			return true;
 		}
 		else{
-			
-		
+
+
 			$ch = curl_init('https://api.quizlet.com/2.0/sets/'.$this->vars['set'].'?client_id=kyM6yER822&whitespace=1');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$res = curl_exec($ch);
 			curl_close($ch);
-		
-		
+
+
 			if ( $json = json_decode($res) ) {
 				$terms= $json->terms;
 			}
@@ -112,18 +112,18 @@ class Crammer
 			$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
 			$this->vars['terms_xml'] = $terms_xml;
 			return true;
-			
+
 		}
 	}
 	function setVars(){
-		
+
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['test_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
 		$this->vars['test_term_name'] = (string)$this->vars['test_term']->name;
 		$this->vars['correct_definition'] = (string)$this->vars['test_term']->definition;
 
-		
+
 	}
 }
 ?>

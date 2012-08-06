@@ -18,7 +18,7 @@
 	       <form method="get" action="index.php">
 	       <input type="text" placeholder="Quizlet Set ID" name="set" required></input>
 	       <input type="number" name="choices" placeholder="Number of Choices" required min="2" max="6"></input>
-	       <input type="submit"></input>
+	       <input type="submit" value="Start Testing"></input>
 		</form>
 
         </div>

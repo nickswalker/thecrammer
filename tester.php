@@ -11,8 +11,9 @@
 
 <body data-set="<?php echo $this->vars['set']; ?>" data-choices="<?php if (isset($_GET['choices'])){ echo $_GET['choices']; } else {echo 2;}?>">
 	<ul class="stats">
-		<li class="right" data-counter="0">0</li>
-		<li class="wrong" data-counter="0">0</li>
+		<li class="correct-count" data-counter="0">0</li>
+		<li class="slow-count" data-counter="0">0</li>
+		<li class="incorrect-count" data-counter="0">0</li>
 	</ul>
 	<div id="content">
 	</div>
