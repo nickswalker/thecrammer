@@ -26,66 +26,63 @@ class Crammer
 	function showError(){
 		require('error.php');
 	}
-	function storeAnswer($term, $answer, $slow){
-
-		if(file_exists('cache/'.$this->vars['set'].'.xml')){
-			$terms_xml = simplexml_load_file('cache/'.$this->vars['set'].'.xml');
-			//If correct, increment the counter for that term
-			if(!$answer){
-				$terms_xml->term[(int)$term]->counter = --$terms_xml->term[(int)$term]->counter;	
-			}
-			else{
-				if($slow){
-					/* $terms_xml->term[(int)$term]->counter = $terms_xml->term[(int)$term]->counter - .5; */
-				}
-				else{
-					$terms_xml->term[(int)$term]->counter = ++$terms_xml->term[(int)$term]->counter;
-				}
-
-			}
-		}
-		$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
-		
-	}
-	function initialize(){
-	if ( isset($_GET['set'])  ) {
-		$temp_success = $this->pickSet($_GET['set']);
-	}
-	elseif( isset($_POST['set']) ){
-		$temp_success = $this->pickSet($_POST['set']);
-	}
-	else {
-		require('picker.php');
-		return false;
-	}
-	if ($temp_success){
-		$this->setVars();
-		// Store an answer if we get the relevant data
-		if ( isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
-			$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
-			return false;
-		}
-		// Generate a question if we get the relevant data
-		elseif ( isset($_POST['questions']) && isset($_POST['choices']) ) {
-			$this->generateQuestions($_POST['questions'],$_POST['choices']);
-			return false; 
+	function storeAnswer($term, $answer, $slow){	
+		//If correct, increment the counter for that term
+		if(!$answer){
+			$this->vars['terms_xml']->term[(int)$term]->counter = --$this->vars['terms_xml']->term[(int)$term]->counter;	
 		}
 		else{
-			require('tester.php');
+			if($slow){
+				/* $terms_xml->term[(int)$term]->counter = $terms_xml->term[(int)$term]->counter - .5; */
+				return false;
+			}
+			else{
+				$this->vars['terms_xml']->term[(int)$term]->counter = ++$this->vars['terms_xml']->term[(int)$term]->counter;
+			}
+		
 		}
+		$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
+		return true;
 	}
+	function initialize(){
+		if ( isset($_GET['set'])  ) {
+			$temp_success = $this->pickSet($_GET['set']);
+		}
+		elseif( isset($_POST['set']) ){
+			$temp_success = $this->pickSet($_POST['set']);
+		}
+		else {
+			require('picker.php');
+			return false;
+		}
+		if ($temp_success){
+			$this->setVars();
+			// Store an answer if we get the relevant data
+			if ( isset($_POST['answer']) && isset($_POST['term']) && isset($_POST['slow']) ) {
+				$this->storeAnswer($_POST['term'],$_POST['answer'],$_POST['slow']);
+				return false;
+			}
+			// Generate a question if we get the relevant data
+			elseif ( isset($_POST['questions']) && isset($_POST['choices']) ) {
+				$this->generateQuestions($_POST['questions'],$_POST['choices']);
+				return false; 
+			}
+			else{
+				require('tester.php');
+			}
+		}
 	}
 	function pickSet($id){
 		$this->vars['set'] = $id;
-		if( file_exists('cache/'.$id.'.xml') ){
-			$terms_xml = simplexml_load_file('cache/'.$id.'.xml');
+		if( file_exists('cache/'.$this->vars['set'].'.xml') ){
+			$terms_xml = simplexml_load_file('cache/'.$this->vars['set'].'.xml');
 			$this->vars['terms_xml'] = $terms_xml;
 			return true;
 		}
 		else{
 			
 		
-			$ch = curl_init('https://api.quizlet.com/2.0/sets/'.$id.'?client_id=kyM6yER822&whitespace=1');
+			$ch = curl_init('https://api.quizlet.com/2.0/sets/'.$this->vars['set'].'?client_id=kyM6yER822&whitespace=1');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$res = curl_exec($ch);
 			curl_close($ch);
@@ -108,11 +105,11 @@ class Crammer
 				$term_name_xml = $term_xml->addChild('name');
 				$definition_xml = $term_xml->addChild('definition');
 				$counter_xml = $term_xml->addChild('counter');
-				$term_xml->name = (string)$term->term;
-				$term_xml->definition = (string)$term->definition;
-				$term_xml->counter = 0;
+				$term_xml->name = htmlspecialchars((string)$term->term);
+				$term_xml->definition = htmlspecialchars((string)$term->definition);
+				/* $term_xml->counter = 0; */
 			}
-			$terms_xml->asXML('cache/'.$id.'.xml');
+			$terms_xml->asXML('cache/'.$this->vars['set'].'.xml');
 			$this->vars['terms_xml'] = $terms_xml;
 			return true;
 			
