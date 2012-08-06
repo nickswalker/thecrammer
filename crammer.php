@@ -68,7 +68,7 @@ class Crammer
 		// Generate a question if we get the relevant data
 		elseif ( isset($_POST['questions']) && isset($_POST['choices']) ) {
 			$this->generateQuestions($_POST['questions'],$_POST['choices']);
-			return false;
+			return false; 
 		}
 		else{
 			require('tester.php');
