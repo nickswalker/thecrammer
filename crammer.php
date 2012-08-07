@@ -42,7 +42,6 @@ class Crammer
 			}
 
 		}
-		echo($this->vars['terms_xml']->term[(int)$index]->counter);
 		$this->vars['set_xml']->asXML('cache/'.$this->vars['set'].'.xml');
 		return true;
 	}
@@ -97,6 +96,8 @@ class Crammer
 	function setVars(){
 		$this->vars['terms_xml'] = $this->vars['set_xml']->terms;
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
+		$this->vars['set_title'] = $this->vars['set_xml']->details->title;
+		$this->vars['set_description'] = $this->vars['set_xml']->details->description;
 		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
 		$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
 		$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;

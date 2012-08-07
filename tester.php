@@ -9,7 +9,7 @@
     <script src="test-interface.js"></script>
 </head>
 
-<body data-set="<?php echo $this->vars['set']; ?>" data-choices="<?php if (isset($_GET['choices'])){ echo $_GET['choices']; } else {echo 2;}?>">
+<body data-set="<?php echo $this->vars['set']; ?>" data-choices="<?php if (isset($_GET['choices'])){ echo $_GET['choices']; } else {echo 2;}?>" data-settitle="<?php echo $this->vars['set_title']; ?>" data-setdescription="<?php echo $this->vars['set_description']; ?>">
 	<ul class="stats">
 		<li class="correct-count" data-counter="0">0</li>
 		<li class="slow-count" data-counter="0">0</li>
