@@ -153,7 +153,7 @@ input {
 
 /* = Tester
 -------------------------------------------------------------- */
-.button {
+.choice {
 	width:48%;
 	display:inline-block;
 	color:#000;
@@ -162,7 +162,7 @@ input {
 	line-height:23px;
 }
 
-.button:nth-of-type(odd) {
+.choice:nth-of-type(odd) {
 	margin-right:4%;
 }
 
@@ -188,7 +188,7 @@ input {
 	color:inherit;
 }
 
-.button {
+.choice {
 	vertical-align:top;
 }
 
@@ -219,7 +219,7 @@ input {
 	z-index:1;
 }
 
-.test:not(.current) a[data-answer='0'] {
+.test:not(.current) a[data-correct='false'] {
 	text-decoration:line-through;
 }
 

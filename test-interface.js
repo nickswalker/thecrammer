@@ -8,9 +8,7 @@ $(document).ready(function() {
 		slowToggled = false,
 		wrongToggled = false,
 		timer = null;
-		
 	getQuestions();
-	
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
 		case 87:
@@ -27,14 +25,16 @@ $(document).ready(function() {
 		event.preventDefault();
 		clearTimeout(timer);
 		$('.test').removeClass('current');
+		getQuestions();
 		postAnswer($(this));
 	});
-	$incorrectCounter.on('click', function(event){
+	$incorrectCounter.on('click', function(event) {
 		toggleWrong();
 	});
-	$slowCounter.on('click', function(event){
+	$slowCounter.on('click', function(event) {
 		toggleSlow();
 	});
+
 	function toggleWrong() {
 		if (slowToggled) {
 			$('.incorrect').slideToggle(200);
@@ -59,17 +59,15 @@ $(document).ready(function() {
 		slowToggled = !slowToggled;
 	}
 
-
 	function updateStats(isCorrect) {
 		if (!isCorrect) {
 			$incorrectCounter.data().counter++;
 			$incorrectCounter.text(String($incorrectCounter.data().counter));
 		} else {
-			if(slow){
+			if (slow) {
 				$slowCounter.data().counter++;
 				$slowCounter.text(String($slowCounter.data().counter));
-			}
-			else{
+			} else {
 				$correctCounter.data().counter++;
 				$correctCounter.text(String($correctCounter.data().counter));
 			}
@@ -108,7 +106,7 @@ $(document).ready(function() {
 	}
 
 	function postAnswer($clicked) {
-		if (!$clicked.data().answer) {
+		if (!$clicked.data().correct) {
 			$currentTest.addClass('incorrect');
 			updateStats(0);
 		} else {
@@ -118,14 +116,14 @@ $(document).ready(function() {
 				$currentTest.addClass('slow');
 			}
 		}
-		getQuestions();
+
 		var testData = $clicked.siblings('h1').data(),
-			term = testData.term,
-			answer = $clicked.data().answer,
+			index = testData.index,
+			correct = $clicked.data().correct,
 			set = $crammerData.set,
 			data = {
-				term: term,
-				answer: answer,
+				index: index,
+				correct: correct,
 				set: set,
 				slow: slow
 			};
@@ -134,7 +132,9 @@ $(document).ready(function() {
 			url: "index.php",
 			data: data,
 			dataType: "text",
-			success: function(returnedObject) {}
+			success: function(returnedObject) {
+				console.log(returnedObject);
+			}
 		});
 	}
 });
