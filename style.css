@@ -140,17 +140,73 @@ form {
 -------------------------------------------------------------- */
 h1 {
 	margin-bottom:24px;
+	font-size: 48px;
 }
-
+h2 {
+	font-size: 24px;
+	line-height: 1;
+	font-weight: 500;
+}
+form	{
+	margin-bottom: 24px;
+	display: block;
+	overflow: visible;
+}
 input {
 	font-family:inherit;
-	font-size:18px;
+	font-size:24px;
 	line-height:24px;
-	padding:0 3px;
-	height:24px;
+	padding:3px 4px 2px 4px;
+	height:48px;
 	overflow:visible;
+	display: inline-block;
+	box-sizing: border-box;
+	width: auto;
+	vertical-align: top;
+	border: 1px solid rgba(0,0,0,.2);
+	box-shadow: none;
+	font-weight: 200;
+	margin-right: 12px;
 }
-
+/*
+input[type=number]{
+	width: 150px;;
+	
+}
+*/
+input[type=submit]{
+	background-color: transparent;
+	border: 1px solid rgba(0,0,0,.2);
+	border-radius: 5px;
+	font-weight: 200;
+	color: rgba(0,0,0,.2);
+	margin: 1px 0 0 0 ;
+	pointer-events: none;
+	
+}
+input[type=submit].active{
+	cursor: pointer;
+	pointer-events: all;
+	-webkit-animation: color-shift 15s infinite;
+}
+@-webkit-keyframes color-shift {
+	0% {
+		color: #BADA55;
+		border-color: #BADA55;
+	}
+	33% {
+		color: #FFD400;
+		border-color: #FFD400;
+	}
+	66%{
+		color: #da5555;
+		border-color: #da5555;
+	}
+	100% {
+		color: #BADA55;
+		border-color: #BADA55;
+	}
+}
 /* = Tester
 -------------------------------------------------------------- */
 .choice {

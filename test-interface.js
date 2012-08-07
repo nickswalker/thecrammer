@@ -8,8 +8,8 @@ $(document).ready(function() {
 		slowToggled = false,
 		wrongToggled = false,
 		timer = null;
-		getQuestions();
-		document.title = $crammerData.settitle + " | Crammer"
+	getQuestions();
+	document.title = $crammerData.settitle + " | th crammer"
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
 		case 87:
