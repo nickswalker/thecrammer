@@ -1,5 +1,5 @@
 <?php
-require('crammer.php');
+require('thecrammer/crammer.php');
 
 $crammer = new Crammer;
 

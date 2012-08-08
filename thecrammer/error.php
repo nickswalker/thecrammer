@@ -14,6 +14,7 @@
 
         <div id="content">
 	        <h1>well, there was an error.</h1>
+	        <?php echo $error;?>
 	        <a href="/">back to the start?</a>
         </div>
 

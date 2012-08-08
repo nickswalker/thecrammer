@@ -44,24 +44,8 @@ table {
 
 /* = Baseline
  -------------------------------------------------------------- */
-a:link {
-	color:#111;
-}
-
-/* unvisited link */
-a:visited {
-	color:#111;
-}
-
-/* visited link */
-a:hover {
-	color:#333;
-}
-
-/* mouse over link */
-a:active {
-	color:#555;
-}
+a {
+color: inherit;}
 
 /* selected link */
 ::selection {
@@ -86,9 +70,9 @@ body {
 	margin:15px 0 24px;
 }
 
-footer {
-	font-weight:300;
-	visibility:hidden;
+footer a {
+	color: rgba(0,0,0,.2);
+	text-decoration: none;
 }
 
 h1 {
@@ -141,16 +125,34 @@ form {
 h1 {
 	margin-bottom:24px;
 	font-size: 48px;
+	border-left: 8px solid #333;
+	padding-left: 16px;
+	-webkit-animation: color-shift-border 25s infinite;
+	 -webkit-animation-timing-function: ease;
 }
 h2 {
 	font-size: 24px;
 	line-height: 1;
 	font-weight: 500;
+	margin-bottom: 24px;
 }
 form	{
 	margin-bottom: 24px;
 	display: block;
 	overflow: visible;
+}
+.recent li a	{
+	text-decoration: none;
+}
+.recent	li::after{
+	content: attr(data-description);
+	color: rgba(0,0,0,.05);
+	-webkit-transition: .2s all ease;
+	margin-left: 10px;
+}
+.recent	li:hover::after{
+	content: attr(data-description);
+	color: rgba(0,0,0,.2);
 }
 input {
 	font-family:inherit;
@@ -181,13 +183,13 @@ input[type=submit]{
 	font-weight: 200;
 	color: rgba(0,0,0,.2);
 	margin: 1px 0 0 0 ;
-	pointer-events: none;
+
 	
 }
 input[type=submit].active{
 	cursor: pointer;
 	pointer-events: all;
-	-webkit-animation: color-shift 15s infinite;
+	-webkit-animation: color-shift 25s infinite;
 }
 @-webkit-keyframes color-shift {
 	0% {
@@ -204,6 +206,20 @@ input[type=submit].active{
 	}
 	100% {
 		color: #BADA55;
+		border-color: #BADA55;
+	}
+}
+@-webkit-keyframes color-shift-border {
+	0% {
+		border-color: #BADA55;
+	}
+	33% {
+		border-color: #FFD400;
+	}
+	66%{
+		border-color: #da5555;
+	}
+	100% {
 		border-color: #BADA55;
 	}
 }
@@ -238,6 +254,7 @@ input[type=submit].active{
 	padding:0;
 	display:block;
 	width:100%;
+	border:none;
 }
 
 .test a {
@@ -330,5 +347,18 @@ input[type=submit].active{
 /*
 .stats li::before	{
 	content: attr(data-counter);
+}
+*/
+
+
+/* = Logo Special
+-------------------------------------------------------------- */
+
+/*
+#logo	{
+	width: 200px;
+	height: 200px;
+/* 	mid left yellow to green, bottom left red to yellow, green to red */
+	background-image: -webkit-radial-gradient(left top,rgba(255, 212, 0, 1),rgba(186, 218, 85, 0)), -webkit-radial-gradient(top right,rgba(218, 85, 85, 1),rgba(255, 212, 0, 0)), -webkit-radial-gradient(center bottom,rgba(186, 218, 85, 1),rgba(218, 85, 85, 0));
 }
 */
