@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	localStore = new Array();
 	var $currentTest = $('.test').addClass('current'),
 		$correctCounter = $('.correct-count'),
 		$incorrectCounter = $('.incorrect-count'),
@@ -7,9 +8,10 @@ $(document).ready(function() {
 		slow = false,
 		slowToggled = false,
 		wrongToggled = false,
-		timer = null;
+		timer = null,
+		numberOfLocalAnswers = 0;
 	getQuestions();
-	document.title = $crammerData.settitle + " | th crammer"
+	document.title = $crammerData.settitle + " | the crammer"
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
 		case 87:
@@ -27,7 +29,23 @@ $(document).ready(function() {
 		clearTimeout(timer);
 		$('.test').removeClass('current');
 		getQuestions();
-		postAnswer($(this));
+		if (!$(this).data().correct) {
+			$currentTest.addClass('incorrect');
+			updateStats(0);
+		} else {
+			$currentTest.addClass('correct');
+			updateStats(1);
+			if (slow) {
+				$currentTest.addClass('slow');
+			}
+		}
+		var testData = $(this).siblings('h1').data(),
+			answer = {
+				index: testData.index,
+				correct: $(this).data().correct,
+				slow: slow
+			}
+		localStoreAnswer(answer);
 	});
 	$incorrectCounter.on('click', function(event) {
 		toggleWrong();
@@ -99,42 +117,37 @@ $(document).ready(function() {
 			data: data,
 			dataType: "text",
 			success: function(returnedObject) {
-				$('#content').prepend($(returnedObject).hide());
+				$('#content').prepend($(returnedObject).hide()); /* 				console.log(returnedObject); */
 				$currentTest = $('.test').first().addClass('current').slideToggle(200);
 				startTimer();
 			}
 		});
 	}
 
-	function postAnswer($clicked) {
-		if (!$clicked.data().correct) {
-			$currentTest.addClass('incorrect');
-			updateStats(0);
-		} else {
-			$currentTest.addClass('correct');
-			updateStats(1);
-			if (slow) {
-				$currentTest.addClass('slow');
-			}
+	function localStoreAnswer(answer) {
+		localStore.push(answer);
+		++numberOfLocalAnswers;
+		if (numberOfLocalAnswers >= 10) {
+			JSON.stringify({
+				answers: localStore
+			});
+			postAnswers(localStore);
+			localStore = new Array();
+			numberOfLocalAnswers = 0;
 		}
+	}
 
-		var testData = $clicked.siblings('h1').data(),
-			index = testData.index,
-			correct = $clicked.data().correct,
-			set = $crammerData.set,
-			data = {
-				index: index,
-				correct: correct,
-				set: set,
-				slow: slow
-			};
+	function postAnswers(localStore) {
+		data = {
+			answers: localStore,
+			set: $crammerData.set
+		}
 		$.ajax({
 			type: "POST",
 			url: "index.php",
 			data: data,
 			dataType: "text",
-			success: function(returnedObject) {
-				console.log(returnedObject);
+			success: function(returnedObject) { /* console.log(returnedObject); */
 			}
 		});
 	}

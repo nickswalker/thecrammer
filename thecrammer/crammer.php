@@ -2,7 +2,7 @@
 class Crammer
 {
 	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 2){
-		if($numberOfChoices = '' || !is_numeric($numberOfChoices)){
+		if($numberOfChoices == '' || !is_numeric($numberOfChoices)){
 			$numberOfChoices = 2;
 		}
 		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
@@ -27,23 +27,30 @@ class Crammer
 		}
 		return $output;
 	}
-	function storeAnswer($index, $correct, $slow){
-		//If correct, increment the counter for that term
-		if($correct =='false'){
-			--$this->vars['terms_xml']->term[(int)$index]->counter;
-		}
-		else{
-			if($slow == "true"){
-				/* $this->vars['terms_xml']->term[(int)$index]->counter -= .5; */
-				return false;
+	function storeAnswers($answers){
+		print_r($answers);
+		foreach ($answers as $answer){
+			$index = (int)$answer['index'];
+			$correct = $answer['correct'];
+			$slow = $answer['slow'];
+			//If correct, increment the counter for that term
+			if($correct =='false'){
+				--$this->vars['terms_xml']->term[$index]->counter;
 			}
 			else{
-				++$this->vars['terms_xml']->term[(int)$index]->counter;
+				if($slow == "true"){
+					/* $this->vars['terms_xml']->term[(int)$index]->counter -= .5; */
+					return false;
+				}
+				else{
+					++$this->vars['terms_xml']->term[$index]->counter;
+				}
+
 			}
+			$this->vars['set_xml']->asXML('thecrammer/cache/'.$this->vars['set'].'.xml');
+			return true;
 
 		}
-		$this->vars['set_xml']->asXML('thecrammer/cache/'.$this->vars['set'].'.xml');
-		return true;
 	}
 	function pickSet($id){
 		$this->vars['set'] = $id;
@@ -60,7 +67,7 @@ class Crammer
 			$res = curl_exec($ch);
 			curl_close($ch);
 			if($ch){
-				
+
 			}
 
 			if ( $json = json_decode($res) ) {
@@ -146,12 +153,12 @@ class Crammer
 
 	}
 	function exception($exception){
-	
+
 		$error = '<p>'.$exception->getMessage().'</p>';
 		require('error.php');
 	}
 	function initialize(){
-	set_exception_handler(array('Crammer','exception'));
+		set_exception_handler(array('Crammer','exception'));
 		if ( isset($_GET['set'])  ) {
 			$temp_success = $this->pickSet($_GET['set']);
 		}
@@ -165,8 +172,8 @@ class Crammer
 		if ($temp_success){
 			$this->setVars();
 			// Store an answer if we get the relevant data
-			if ( isset($_POST['index']) && isset($_POST['correct']) && isset($_POST['slow']) ) {
-				$this->storeAnswer($_POST['index'],$_POST['correct'],$_POST['slow']);
+			if ( isset($_POST['answers'])  ) {
+				$this->storeAnswers( $_POST['answers'] );
 				return false;
 			}
 			// Generate a question if we get the relevant data
