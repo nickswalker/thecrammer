@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	localStore = new Array();
+	var locolQuestions;
 	var $currentTest = $('.test').addClass('current'),
 		$correctCounter = $('.correct-count'),
 		$incorrectCounter = $('.incorrect-count'),
@@ -9,8 +10,10 @@ $(document).ready(function() {
 		slowToggled = false,
 		wrongToggled = false,
 		timer = null,
-		numberOfLocalAnswers = 0;
-	getQuestions();
+		numberOfLocalAnswers = 0,
+		numberOfLocalQuestions = 0;
+		
+	showQuestion();
 	document.title = $crammerData.settitle + " | the crammer"
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
@@ -28,7 +31,6 @@ $(document).ready(function() {
 		event.preventDefault();
 		clearTimeout(timer);
 		$('.test').removeClass('current');
-		getQuestions();
 		if (!$(this).data().correct) {
 			$currentTest.addClass('incorrect');
 			updateStats(0);
@@ -45,6 +47,7 @@ $(document).ready(function() {
 				correct: $(this).data().correct,
 				slow: slow
 			}
+		showQuestion();
 		localStoreAnswer(answer);
 	});
 	$incorrectCounter.on('click', function(event) {
@@ -101,9 +104,21 @@ $(document).ready(function() {
 			slow = true;
 		}, allowedTime);
 	}
+	function showQuestion(){
+			console.log('Local Questions:' +numberOfLocalQuestions);
+		console.log('Local Answers:' +numberOfLocalAnswers);
+		if(numberOfLocalQuestions<=2){
+			getQuestions(showQuestion);
+			return false;
+		}
+		$('#storage .test:first-child').hide().prependTo('#content');
+		--numberOfLocalQuestions;
+				$currentTest = $('#content .test:first-child').addClass('current').slideToggle(200);
+				startTimer();
 
-	function getQuestions() {
-		var numberOfQuestions = 1,
+	}
+	function getQuestions(callback) {
+		var numberOfQuestions = 10,
 			numberOfChoices = $crammerData.choices,
 			set = $crammerData.set,
 			data = {
@@ -117,9 +132,9 @@ $(document).ready(function() {
 			data: data,
 			dataType: "text",
 			success: function(returnedObject) {
-				$('#content').prepend($(returnedObject).hide()); /* 				console.log(returnedObject); */
-				$currentTest = $('.test').first().addClass('current').slideToggle(200);
-				startTimer();
+				numberOfLocalQuestions = $('#storage .test').length;
+				$('#storage').append(returnedObject);
+				callback();
 			}
 		});
 	}
@@ -147,7 +162,7 @@ $(document).ready(function() {
 			url: "index.php",
 			data: data,
 			dataType: "text",
-			success: function(returnedObject) { /* console.log(returnedObject); */
+			success: function(returnedObject) { console.log('Success submit');
 			}
 		});
 	}

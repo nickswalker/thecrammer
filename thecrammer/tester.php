@@ -17,6 +17,6 @@
 	</ul>
 	<div id="content">
 	</div>
-
+	<div id="storage"></div>
 </body>
 </html>

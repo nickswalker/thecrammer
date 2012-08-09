@@ -5,8 +5,13 @@ class Crammer
 		if($numberOfChoices == '' || !is_numeric($numberOfChoices)){
 			$numberOfChoices = 2;
 		}
-		echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
-
+		for($i=1; $i<=$numberOfQuestions; $i++){
+				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
+				$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
+				$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
+				$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
+			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
+		}
 	}
 	function generateChoices($numberOfChoices = 2){
 
@@ -47,10 +52,9 @@ class Crammer
 				}
 
 			}
-			$this->vars['set_xml']->asXML('thecrammer/cache/'.$this->vars['set'].'.xml');
-			return true;
 
 		}
+		$this->vars['set_xml']->asXML('thecrammer/cache/'.$this->vars['set'].'.xml');
 	}
 	function pickSet($id){
 		$this->vars['set'] = $id;
@@ -105,10 +109,7 @@ class Crammer
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['set_title'] = $this->vars['set_xml']->details->title;
 		$this->vars['set_description'] = $this->vars['set_xml']->details->description;
-		$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
-		$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
-		$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
-		$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
+
 	}
 	function listMostRecent($maxNumberToList = 5, $directory = 'thecrammer/cache/', $sortOrder = "newestFirst"){
 

@@ -225,6 +225,10 @@ input[type=submit].active{
 }
 /* = Tester
 -------------------------------------------------------------- */
+#storage	{
+display: none;
+visibility: hidden;
+}
 .choice {
 	width:48%;
 	display:inline-block;
