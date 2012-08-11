@@ -27,7 +27,7 @@ $(document).ready(function() {
 			break;
 		}
 	});
-	$('body').on('click', 'a', function(event) {
+	$('body').on('click', '.choice', function(event) {
 		event.preventDefault();
 		clearTimeout(timer);
 		$('.test').removeClass('current');

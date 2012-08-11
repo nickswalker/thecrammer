@@ -236,6 +236,7 @@ visibility: hidden;
 	text-decoration:none;
 	border-top:1px dashed rgba(0,0,0,.1);
 	line-height:23px;
+		vertical-align:top;
 }
 
 .choice:nth-of-type(odd) {
@@ -264,11 +265,6 @@ visibility: hidden;
 .test a {
 	color:inherit;
 }
-
-.choice {
-	vertical-align:top;
-}
-
 .current {
 	opacity:1;
 }
@@ -309,7 +305,7 @@ visibility: hidden;
 .stats {
 	position:absolute;
 	top:0;
-	left:-120px;
+	left:-160px;
 	padding-top:12px;
 }
 
@@ -347,7 +343,6 @@ visibility: hidden;
 .stats .activated {
 	margin-top:12px;
 }
-
 /*
 .stats li::before	{
 	content: attr(data-counter);
@@ -358,11 +353,59 @@ visibility: hidden;
 /* = Logo Special
 -------------------------------------------------------------- */
 
-/*
+
 #logo	{
 	width: 200px;
 	height: 200px;
 /* 	mid left yellow to green, bottom left red to yellow, green to red */
 	background-image: -webkit-radial-gradient(left top,rgba(255, 212, 0, 1),rgba(186, 218, 85, 0)), -webkit-radial-gradient(top right,rgba(218, 85, 85, 1),rgba(255, 212, 0, 0)), -webkit-radial-gradient(center bottom,rgba(186, 218, 85, 1),rgba(218, 85, 85, 0));
 }
-*/
+
+
+/* = Media Queries
+-------------------------------------------------------------- */
+
+@media only screen and (max-width: 400px) {
+	body	{
+		width: auto;
+	}
+	.choice	{
+		width: 100%;
+		display: block;
+	}
+	.test h1	{
+		font-size: 24px;
+		line-height: 36px;
+	}
+}
+
+@media only screen and (max-width: 836px) {
+	body{
+		width: 100%;
+	}
+	.stats{
+		display: block;
+		position: static;
+		padding: 0;
+		left: 0;
+		padding: 0 32px;
+		margin-bottom: 12px;
+		
+	}
+	.stats .home	{
+	float: right;
+}
+	#content	{
+		display: block;
+		width: 100%;
+		margin: 0;
+	}
+	.test	{
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	.choice	{
+		min-height: 36px;
+	}
+
+}

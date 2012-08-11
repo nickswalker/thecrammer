@@ -1,9 +1,9 @@
 <?php
 class Crammer
 {
-	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 2){
+	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 4){
 		if($numberOfChoices == '' || !is_numeric($numberOfChoices)){
-			$numberOfChoices = 2;
+			$numberOfChoices = 4;
 		}
 		for($i=1; $i<=$numberOfQuestions; $i++){
 				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
@@ -13,7 +13,7 @@ class Crammer
 			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
 		}
 	}
-	function generateChoices($numberOfChoices = 2){
+	function generateChoices($numberOfChoices = 4){
 
 		$correctSpot = rand(1,(int)$numberOfChoices);
 		for ($i = 1; $i <= $numberOfChoices; $i++) {
