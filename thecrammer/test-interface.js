@@ -12,9 +12,10 @@ $(document).ready(function() {
 		timer = null,
 		numberOfLocalAnswers = 0,
 		numberOfLocalQuestions = 0;
-		
-	showQuestion();
 	document.title = $crammerData.settitle + " | the crammer"
+	
+	showQuestion();
+
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
 		case 87:
@@ -30,7 +31,7 @@ $(document).ready(function() {
 	$('body').on('click', '.choice', function(event) {
 		event.preventDefault();
 		clearTimeout(timer);
-		$('.test').removeClass('current');
+		$('#content .test:first-child').removeClass('current');
 		if (!$(this).data().correct) {
 			$currentTest.addClass('incorrect');
 			updateStats(0);
@@ -105,20 +106,21 @@ $(document).ready(function() {
 		}, allowedTime);
 	}
 	function showQuestion(){
-			console.log('Local Questions:' +numberOfLocalQuestions);
-		console.log('Local Answers:' +numberOfLocalAnswers);
 		if(numberOfLocalQuestions<=2){
 			getQuestions(showQuestion);
 			return false;
 		}
 		$('#storage .test:first-child').hide().prependTo('#content');
 		--numberOfLocalQuestions;
-				$currentTest = $('#content .test:first-child').addClass('current').slideToggle(200);
-				startTimer();
+		$currentTest.remove();
+		$currentTest = $('#content .test:first-child').addClass('current').slideToggle(200, function(){
+			startTimer();
+		});
+		
 
 	}
 	function getQuestions(callback) {
-		var numberOfQuestions = 10,
+		var numberOfQuestions = 100,
 			numberOfChoices = $crammerData.choices,
 			set = $crammerData.set,
 			data = {
@@ -132,8 +134,8 @@ $(document).ready(function() {
 			data: data,
 			dataType: "text",
 			success: function(returnedObject) {
-				numberOfLocalQuestions = $('#storage .test').length;
 				$('#storage').append(returnedObject);
+				numberOfLocalQuestions = $('#storage .test').length;
 				callback();
 			}
 		});
@@ -142,7 +144,7 @@ $(document).ready(function() {
 	function localStoreAnswer(answer) {
 		localStore.push(answer);
 		++numberOfLocalAnswers;
-		if (numberOfLocalAnswers >= 10) {
+		if (numberOfLocalAnswers >= 5) {
 			JSON.stringify({
 				answers: localStore
 			});

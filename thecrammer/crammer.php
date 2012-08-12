@@ -6,7 +6,21 @@ class Crammer
 			$numberOfChoices = 4;
 		}
 		for($i=1; $i<=$numberOfQuestions; $i++){
-				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
+				
+					$finished = false;
+					while( !$finished ){
+						$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
+						$temp_counter = $this->vars['correct_index']->counter;
+						//If the counter is negative or zero, throw it into the test
+						if ( $temp_counter <= 0){
+							$finished = true;
+						}
+						//Otherwise, pick a random number between zero and the counter and if it's zero let it in. The higher the counter the less chance of this happening.
+						elseif ( rand(0, $temp_counter) == 0 ) {
+							$finished = true;
+						}
+					}
+				
 				$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
 				$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
 				$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
@@ -33,7 +47,6 @@ class Crammer
 		return $output;
 	}
 	function storeAnswers($answers){
-		print_r($answers);
 		foreach ($answers as $answer){
 			$index = (int)$answer['index'];
 			$correct = $answer['correct'];
@@ -109,6 +122,7 @@ class Crammer
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['set_title'] = $this->vars['set_xml']->details->title;
 		$this->vars['set_description'] = $this->vars['set_xml']->details->description;
+		/* $this->vars['set_counter_average'] = $this->vars['set_xml']->details->description; */
 
 	}
 	function listMostRecent($maxNumberToList = 5, $directory = 'thecrammer/cache/', $sortOrder = "newestFirst"){
