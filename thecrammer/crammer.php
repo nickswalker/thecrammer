@@ -57,15 +57,12 @@ class Crammer
 			}
 			else{
 				if($slow == "true"){
-					/* $this->vars['terms_xml']->term[(int)$index]->counter -= .5; */
-					return false;
 				}
 				else{
 					++$this->vars['terms_xml']->term[$index]->counter;
 				}
 
 			}
-
 		}
 		$this->vars['set_xml']->asXML('thecrammer/cache/'.$this->vars['set'].'.xml');
 	}

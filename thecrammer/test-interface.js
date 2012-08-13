@@ -1,6 +1,4 @@
 $(document).ready(function() {
-	localStore = new Array();
-	var locolQuestions;
 	var $currentTest = $('.test').addClass('current'),
 		$correctCounter = $('.correct-count'),
 		$incorrectCounter = $('.incorrect-count'),
@@ -13,9 +11,7 @@ $(document).ready(function() {
 		numberOfLocalAnswers = 0,
 		numberOfLocalQuestions = 0;
 	document.title = $crammerData.settitle + " | the crammer"
-	
 	showQuestion();
-
 	$('body').keyup(function(event) {
 		switch (event.keyCode) {
 		case 87:
@@ -105,20 +101,20 @@ $(document).ready(function() {
 			slow = true;
 		}, allowedTime);
 	}
-	function showQuestion(){
-		if(numberOfLocalQuestions<=2){
+
+	function showQuestion() {
+		if (numberOfLocalQuestions <= 2 && navigator.onLine ) {
 			getQuestions(showQuestion);
 			return false;
 		}
 		$('#storage .test:first-child').hide().prependTo('#content');
-		--numberOfLocalQuestions;
-		$currentTest.remove();
-		$currentTest = $('#content .test:first-child').addClass('current').slideToggle(200, function(){
+		--numberOfLocalQuestions; /* Removing old questions improves performance with more than 20 questions on mobile devices.*/
+		/* $currentTest.remove(); */
+		$currentTest = $('#content .test:first-child').addClass('current').slideToggle(200, function() {
 			startTimer();
 		});
-		
-
 	}
+
 	function getQuestions(callback) {
 		var numberOfQuestions = 100,
 			numberOfChoices = $crammerData.choices,
@@ -142,21 +138,23 @@ $(document).ready(function() {
 	}
 
 	function localStoreAnswer(answer) {
-		localStore.push(answer);
+		localStorage[numberOfLocalAnswers] = JSON.stringify(answer);
 		++numberOfLocalAnswers;
-		if (numberOfLocalAnswers >= 5) {
-			JSON.stringify({
-				answers: localStore
-			});
-			postAnswers(localStore);
-			localStore = new Array();
-			numberOfLocalAnswers = 0;
+		if (numberOfLocalAnswers >= 5 && navigator.onLine ) {
+			postAnswers(localStorage);
 		}
 	}
 
 	function postAnswers(localStore) {
+		var preparedSubmitData = new Array;
+		for (i = 0; i <= localStore.length - 1; i++) {
+			key = localStore.key(i);
+			val = localStore.getItem(key);
+			preparedSubmitData.push( JSON.parse(val) );
+			
+		}
 		data = {
-			answers: localStore,
+			answers: preparedSubmitData,
 			set: $crammerData.set
 		}
 		$.ajax({
@@ -164,7 +162,10 @@ $(document).ready(function() {
 			url: "index.php",
 			data: data,
 			dataType: "text",
-			success: function(returnedObject) { console.log('Success submit');
+			success: function(returnedObject) {
+				localStorage.clear();
+				numberOfLocalAnswers = 0;
+				console.log(returnedObject);
 			}
 		});
 	}
