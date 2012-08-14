@@ -166,7 +166,7 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 		}
 
 	}
-	function showStats(){
+	function showStats($statsFormat){
 		$xp = new XsltProcessor();
 		// create a DOM document and load the XSL stylesheet
 		$xsl = new DomDocument;
@@ -178,8 +178,27 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 		$xml_doc = new DomDocument;
 		$xml_doc->load('thecrammer/cache/'.$this->vars['set'].'.xml');
 		 // transform the XML into HTML using the XSL file
-  if ($html = $xp->transformToXML($xml_doc)) {
-      echo $html;
+  if ($xml = $xp->transformToXML($xml_doc)) {
+  	$stats_xml = simplexml_load_string($xml);
+  	foreach($stats_xml->top as $top){
+	  	$temp_top .= '<li>'.(string)$top.'</li>';
+  	}
+  	foreach($stats_xml->bottom as $bottom){
+	  	$temp_bottom .= '<li>'.(string)$bottom.'</li>';
+  	}
+      $search = array(
+      		'{{Total}}',
+			'{{Top}}',
+			'{{Bottom}}'
+		);
+		$replace = array(
+			(string)$stats_xml->total,
+			$temp_top,
+			$temp_bottom
+			
+		);
+
+		echo str_replace($search, $replace, $statsFormat);
   } else {
      throw new Exception("Couldn't load the stats");
   } 
@@ -210,7 +229,7 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 				return false;
 			}
 			elseif ( isset($_GET['stats'])  ) {
-				$this->showStats();
+				require('thecrammer/stats.php');
 				return false;
 			}
 			// Generate a question if we get the relevant data
