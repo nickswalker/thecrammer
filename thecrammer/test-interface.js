@@ -8,7 +8,7 @@ $(document).ready(function() {
 		slowToggled = false,
 		wrongToggled = false,
 		timer = null,
-		numberOfLocalAnswers = 0,
+		numberOfLocalAnswers = localStorage.length || 0,
 		numberOfLocalQuestions = 0;
 	document.title = $crammerData.settitle + " | the crammer"
 	showQuestion();
@@ -103,9 +103,12 @@ $(document).ready(function() {
 	}
 
 	function showQuestion() {
-		if (numberOfLocalQuestions <= 2 && navigator.onLine ) {
+		if (numberOfLocalQuestions === 0){
 			getQuestions(showQuestion);
 			return false;
+		}
+		if (numberOfLocalQuestions <= 2 && navigator.onLine ) {
+			getQuestions(null);
 		}
 		$('#storage .test:first-child').hide().prependTo('#content');
 		--numberOfLocalQuestions; /* Removing old questions improves performance with more than 20 questions on mobile devices.*/
@@ -116,7 +119,7 @@ $(document).ready(function() {
 	}
 
 	function getQuestions(callback) {
-		var numberOfQuestions = 100,
+		var numberOfQuestions = 30,
 			numberOfChoices = $crammerData.choices,
 			set = $crammerData.set,
 			data = {
@@ -165,7 +168,6 @@ $(document).ready(function() {
 			success: function(returnedObject) {
 				localStorage.clear();
 				numberOfLocalAnswers = 0;
-				console.log(returnedObject);
 			}
 		});
 	}

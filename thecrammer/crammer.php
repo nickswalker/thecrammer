@@ -6,24 +6,26 @@ class Crammer
 			$numberOfChoices = 4;
 		}
 		for($i=1; $i<=$numberOfQuestions; $i++){
-				
-					$finished = false;
-					while( !$finished ){
-						$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
-						$temp_counter = $this->vars['correct_index']->counter;
-						//If the counter is negative or zero, throw it into the test
-						if ( $temp_counter <= 0){
+
+			$finished = false;
+			while( !$finished ){
+				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
+				$temp_counter = $this->vars['correct_index']->counter;
+				//If the counter is negative or zero, throw it into the test
+				if ( $temp_counter <= 0){
+					$finished = true;
+				}
+				//Otherwise, pick a random number between zero and the counter and if it's zero let it in. The higher the counter the less chance of this happening.
+				/*
+elseif ( rand(0, $temp_counter) == 0 ) {
 							$finished = true;
 						}
-						//Otherwise, pick a random number between zero and the counter and if it's zero let it in. The higher the counter the less chance of this happening.
-						elseif ( rand(0, $temp_counter) == 0 ) {
-							$finished = true;
-						}
-					}
-				
-				$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
-				$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
-				$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
+*/
+			}
+
+			$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
+			$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
+			$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
 			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
 		}
 	}
@@ -164,6 +166,25 @@ class Crammer
 		}
 
 	}
+	function showStats(){
+		$xp = new XsltProcessor();
+		// create a DOM document and load the XSL stylesheet
+		$xsl = new DomDocument;
+		$xsl->load('thecrammer/stats.xslt');
+
+		// import the XSL styelsheet into the XSLT process
+		$xp->importStylesheet($xsl);
+		// create a DOM document and load the XML datat
+		$xml_doc = new DomDocument;
+		$xml_doc->load('thecrammer/cache/'.$this->vars['set'].'.xml');
+		 // transform the XML into HTML using the XSL file
+  if ($html = $xp->transformToXML($xml_doc)) {
+      echo $html;
+  } else {
+     throw new Exception("Couldn't load the stats");
+  } 
+
+	}
 	function exception($exception){
 
 		$error = '<p>'.$exception->getMessage().'</p>';
@@ -186,6 +207,10 @@ class Crammer
 			// Store an answer if we get the relevant data
 			if ( isset($_POST['answers'])  ) {
 				$this->storeAnswers( $_POST['answers'] );
+				return false;
+			}
+			elseif ( isset($_GET['stats'])  ) {
+				$this->showStats();
 				return false;
 			}
 			// Generate a question if we get the relevant data
