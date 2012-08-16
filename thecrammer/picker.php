@@ -14,10 +14,10 @@
 
         <div id="content">
 	   
-	       <h1>the crammer</h1>
+	       <h1 class="color-shift">the crammer</h1>
 	       <form method="get" action="index.php">
 	       <input type="text" placeholder="quizlet set ID" name="set" required></input>
-	       <input type="number" name="choices" placeholder="# choices" required min="2" max="6"></input>
+	       <!-- <input type="number" name="choices" placeholder="# choices" required min="2" max="6"></input> -->
 	       <input type="submit" value="Start"></input>
 		</form>
 		<h2>most recently studied</h2>

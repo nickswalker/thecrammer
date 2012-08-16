@@ -10,7 +10,7 @@ class Crammer
 			$finished = false;
 			while( !$finished ){
 				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
-				$temp_counter = $this->vars['correct_index']->counter;
+				$temp_counter = $this->vars['terms_xml']->term[$this->vars['correct_index']]->counter;
 				//If the counter is negative or zero, throw it into the test
 				if ( $temp_counter <= 0){
 					$finished = true;
@@ -26,7 +26,7 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 			$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
 			$this->vars['correct_term_name'] = (string)$this->vars['correct_term']->name;
 			$this->vars['correct_term_definition'] = (string)$this->vars['correct_term']->definition;
-			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
+			echo( '<div class="test"><h1 data-set="'. $this->vars['set'] .'"data-index="'.$this->vars['correct_index'].'" data-difficulty="'.$this->vars['terms_xml']->term[$this->vars['correct_index']]->counter .'">'.$this->vars['correct_term_name'].'</h1>'. $this->generateChoices($numberOfChoices) .'</div>');
 		}
 	}
 	function generateChoices($numberOfChoices = 4){
@@ -37,10 +37,15 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 				$output .= '<a class="choice" data-correct="true" href="" data-definition="'. $this->vars['correct_term_definition'] .'">'. $this->vars['correct_term_definition'] .'</a>';
 			}
 			else{
+				$finished = false;
+				while( !$finished ){
 				$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
-				if ($temp_incorrect_index == $this->vars['correct_index']){
-					$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
+	
+				//If the counter is negative or zero, throw it into the test
+				if ( $temp_incorrect_index != $this->vars['correct_index'] ){
+					$finished = true;
 				}
+		}
 				$temp_incorrect_definition = (string)$this->vars['terms_xml']->term[$temp_incorrect_index]->definition;
 				$temp_incorrect_name = (string)$this->vars['terms_xml']->term[$temp_incorrect_index]->name;
 				$output .= '<a class="choice" data-correct="false" data-name="'.$temp_incorrect_name.'" href="">'.$temp_incorrect_definition.'</a>';

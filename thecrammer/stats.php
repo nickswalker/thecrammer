@@ -5,7 +5,7 @@
     <meta name="description" content="the crammer: Dead simple study tool." />
     <link rel="stylesheet" media="screen" href="style.css">
 
-    <title>Crammer</title>
+    <title>the crammer</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
   </head>
