@@ -14,7 +14,7 @@ Crammer.prototype.showQuestion = function() {
 		return false;
 	}
 	if (this.numberOfLocalQuestions <= 2 && navigator.onLine) {
-		getQuestions(null);
+		this.getQuestions(null);
 	}
 	$('#storage .test:first-child').hide().prependTo('#content');
 	--this.numberOfLocalQuestions; /* Removing old questions improves performance with more than 20 questions on mobile devices.*/
@@ -60,6 +60,7 @@ Crammer.prototype.choiceMade = function(index, isCorrect, isSlow) {
 	this.localStoreAnswer(answer);
 }
 Crammer.prototype.postAnswers = function(localStore) {
+	var self = this;
 	var preparedSubmitData = new Array;
 	for (i = 0; i <= localStore.length - 1; i++) {
 		key = localStore.key(i);
@@ -76,8 +77,9 @@ Crammer.prototype.postAnswers = function(localStore) {
 		data: data,
 		dataType: "text",
 		success: function(returnedObject) {
+			console.log('success');
 			localStorage.clear();
-			this.numberOfLocalAnswers = 0;
+			self.numberOfLocalAnswers = 0;
 		}
 	});
 }

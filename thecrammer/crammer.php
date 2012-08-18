@@ -10,17 +10,15 @@ class Crammer
 			$finished = false;
 			while( !$finished ){
 				$this->vars['correct_index'] =  rand(0,$this->vars['number_of_terms']);
-				$temp_counter = $this->vars['terms_xml']->term[$this->vars['correct_index']]->counter;
+				$temp_counter = (int)$this->vars['terms_xml']->term[$this->vars['correct_index']]->counter;
 				//If the counter is negative or zero, throw it into the test
 				if ( $temp_counter <= 0){
 					$finished = true;
 				}
 				//Otherwise, pick a random number between zero and the counter and if it's zero let it in. The higher the counter the less chance of this happening.
-				/*
-elseif ( rand(0, $temp_counter) == 0 ) {
+				elseif ( rand(0, $temp_counter) == 0 ) {
 							$finished = true;
 						}
-*/
 			}
 
 			$this->vars['correct_term'] = $this->vars['terms_xml']->term[$this->vars['correct_index']];
@@ -39,13 +37,13 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 			else{
 				$finished = false;
 				while( !$finished ){
-				$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
-	
-				//If the counter is negative or zero, throw it into the test
-				if ( $temp_incorrect_index != $this->vars['correct_index'] ){
-					$finished = true;
+					$temp_incorrect_index = rand(0,$this->vars['number_of_terms']);
+
+					//If the counter is negative or zero, throw it into the test
+					if ( $temp_incorrect_index != $this->vars['correct_index'] ){
+						$finished = true;
+					}
 				}
-		}
 				$temp_incorrect_definition = (string)$this->vars['terms_xml']->term[$temp_incorrect_index]->definition;
 				$temp_incorrect_name = (string)$this->vars['terms_xml']->term[$temp_incorrect_index]->name;
 				$output .= '<a class="choice" data-correct="false" data-name="'.$temp_incorrect_name.'" href="">'.$temp_incorrect_definition.'</a>';
@@ -182,31 +180,31 @@ elseif ( rand(0, $temp_counter) == 0 ) {
 		// create a DOM document and load the XML datat
 		$xml_doc = new DomDocument;
 		$xml_doc->load('thecrammer/cache/'.$this->vars['set'].'.xml');
-		 // transform the XML into HTML using the XSL file
-  if ($xml = $xp->transformToXML($xml_doc)) {
-  	$stats_xml = simplexml_load_string($xml);
-  	foreach($stats_xml->top as $top){
-	  	$temp_top .= '<li>'.(string)$top.'</li>';
-  	}
-  	foreach($stats_xml->bottom as $bottom){
-	  	$temp_bottom .= '<li>'.(string)$bottom.'</li>';
-  	}
-      $search = array(
-      		'{{Total}}',
-			'{{Top}}',
-			'{{Bottom}}'
-		);
-		$replace = array(
-			(string)$stats_xml->total,
-			$temp_top,
-			$temp_bottom
-			
-		);
+		// transform the XML into HTML using the XSL file
+		if ($xml = $xp->transformToXML($xml_doc)) {
+			$stats_xml = simplexml_load_string($xml);
+			foreach($stats_xml->top as $top){
+				$temp_top .= '<li>'.(string)$top.'</li>';
+			}
+			foreach($stats_xml->bottom as $bottom){
+				$temp_bottom .= '<li>'.(string)$bottom.'</li>';
+			}
+			$search = array(
+				'{{Total}}',
+				'{{Top}}',
+				'{{Bottom}}'
+			);
+			$replace = array(
+				(string)$stats_xml->total,
+				$temp_top,
+				$temp_bottom
 
-		echo str_replace($search, $replace, $statsFormat);
-  } else {
-     throw new Exception("Couldn't load the stats");
-  } 
+			);
+
+			echo str_replace($search, $replace, $statsFormat);
+		} else {
+			throw new Exception("Couldn't load the stats");
+		}
 
 	}
 	function exception($exception){
