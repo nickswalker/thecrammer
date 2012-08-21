@@ -31,11 +31,13 @@
 |		});
 |
 */
+Route::get('multichoice/(:any)/stats', 'stats@index');
+Route::post('multichoice/(:any)/postanswers', 'multichoice@postAnswers');
+Router::register(array('GET', 'POST'), 'multichoice/(:any)/getquestions', 'multichoice@getQuestions');
+Route::get('multichoice/(:any)', 'multichoice@index');
 
-Route::get('/', function()
-{
-	return View::make('home.index');
-});
+Route::get('/', 'picker@index');
+
 
 /*
 |--------------------------------------------------------------------------
