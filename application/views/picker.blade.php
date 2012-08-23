@@ -1,18 +1,17 @@
 @layout('layouts/main')
 @section('content')
+<?php Asset::container('header')->add('picker.css', 'css/picker.css'); ?>
 <div id="content">
  <h1 class="color-shift">the crammer</h1>
-	       		
-	       		{{ Form::open('multichoice', 'POST') }}
-	       		{{ Form::text('set', '', array('placeholder' => 'Quizlet Set ID')); }}
-	       		{{ Form::submit('Start'); }}
-	       		{{ Form::close() }}
+	       	<input id="set" type="text" placeholder="Quizlet Set ID" />
+	       	<a id="go" href="">Start</a>
+
 	       		<h2>most recently studied</h2>
         <footer><a href="http://nickswalker.github.com/thecrammer/">about the crammer</a> </footer>
     <script>
 	    $(document).ready(function(){
-		    $('input').change(function(){
-			   $('form').attr('action', 'multichoice/'+$(this).val() );
+		    $('#set').change(function(){
+			   $('#go').attr('href', 'multichoice/'+$(this).val() );
 		    });
 	    });
     </script>

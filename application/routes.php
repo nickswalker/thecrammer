@@ -36,6 +36,8 @@ Route::post('multichoice/(:any)/postanswers', 'multichoice@postAnswers');
 Router::register(array('GET', 'POST'), 'multichoice/(:any)/getquestions', 'multichoice@getQuestions');
 Route::get('multichoice/(:any)', 'multichoice@index');
 
+Route::get('matching/(:any)', 'matching@index');
+
 Route::get('/', 'picker@index');
 
 

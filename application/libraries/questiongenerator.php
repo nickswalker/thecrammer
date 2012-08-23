@@ -13,16 +13,7 @@ class QuestionGenerator {
 
 			$temp_choices_array = $this->generateChoices($numberOfChoices, $termsXML);
 
-			$temp_correct_choice = array_filter($temp_choices_array, function($choice){
-					if($choice['isCorrect'] == 'true'){
-						return true;
-					}
-				}) ;
-			
-			$temp_question_array['correctChoice'] = array_values($temp_correct_choice);
-			$temp_question_array['choices'] =   $temp_choices_array;
-
-			array_push($temp_questions_array, $temp_question_array);
+			array_push($temp_questions_array, $temp_choices_array);
 
 
 
@@ -35,7 +26,7 @@ class QuestionGenerator {
 		$temp_choices_array = array();
 		$number_of_terms = $termsXML->term->count() - 1;
 
-		$correct_choice_spot = rand(1,(int)$numberOfChoices);
+
 		for ($x = 1; $x <= $numberOfChoices; $x++) {
 			$temp_choice_array = array();
 
@@ -55,15 +46,8 @@ class QuestionGenerator {
 			}
 
 
-
-
-
-
-
-
-
 			//If the current iteration happens to be the spot we determined we want the correct answer to go, put the correct stuff
-			if($x == $correct_choice_spot){
+			if($x == 1){
 
 				$correct_term = $termsXML->term[$correct_index];
 				$correct_term_name = (string)$correct_term->name;

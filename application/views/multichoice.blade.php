@@ -1,8 +1,11 @@
 @layout('layouts/main')
 @section('content')
+<?php Asset::container('header')->add('timer.js', 'js/timer.js'); ?>
+<?php Asset::container('header')->add('multichoice.css', 'css/multichoice.css'); ?>
+<?php Asset::container('header')->add('stats.js', 'js/stats.js'); ?>
+<?php Asset::container('header')->add('model-interaction.js', 'js/model-interaction.js'); ?>
 
-
-<body data-set="{{ $setID }}" data-choices="<?php if (isset($_GET['choices'])){ echo $_GET['choices']; } else {echo 4;}?>" data-settitle="{{ $setTitle }}" data-setdescription="{{ $setDescription }}">
+<body data-set="{{ $setID }}" data-choices="4" data-settitle="{{ $setTitle }}" data-setdescription="{{ $setDescription }}">
 	<ul class="stats">
 		<li class="correct-count" data-counter="0">0</li>
 		<li class="slow-count" data-counter="0">0</li>
@@ -60,7 +63,9 @@ $(document).ready(function () {
                 $('#content .test:first-child').addClass('slow');
             }
         }
-        crammer.choiceMade($(this).siblings('h1').data().index, $(this).data().correct, timer.slow);
+        if(!timer.slow){
+        crammer.choiceMade($(this).siblings('h1').data().index, $(this).data().correct);
+        }
         crammer.showQuestion();
     });
 

@@ -1,8 +1,8 @@
 <?php
 class Base {
-var $vars;
-var $cacheDir = 'xmlcache/';
-		function storeAnswers($answers){
+	var $vars;
+	var $cacheDir = 'xmlcache/';
+	function storeAnswers($answers){
 		foreach ($answers as $answer){
 			$index = (int)$answer['index'];
 			$correct = $answer['correct'];
@@ -11,14 +11,12 @@ var $cacheDir = 'xmlcache/';
 			if($correct =='false'){
 				--$this->vars['terms_xml']->term[$index]->counter;
 			}
-			else{
-				if($slow == "true"){
-				}
-				else{
-					++$this->vars['terms_xml']->term[$index]->counter;
-				}
 
+			else{
+				++$this->vars['terms_xml']->term[$index]->counter;
 			}
+
+
 		}
 		$this->vars['set_xml']->asXML('xmlcache/'.$this->vars['set'].'.xml');
 	}
@@ -72,13 +70,13 @@ var $cacheDir = 'xmlcache/';
 		}
 	}
 	function setVars($id){
-		
+
 		$this->pickSet($id);
-$this->vars['terms_xml'] = $this->vars['set_xml']->terms;
+		$this->vars['terms_xml'] = $this->vars['set_xml']->terms;
 		$this->vars['number_of_terms'] = $this->vars['terms_xml']->term->count() - 1;
 		$this->vars['set_title'] = $this->vars['set_xml']->details->title;
 		$this->vars['set_description'] = $this->vars['set_xml']->details->description;
-		
+
 		/* $this->vars['set_counter_average'] = $this->vars['set_xml']->details->description; */
 		return $this->vars;
 	}

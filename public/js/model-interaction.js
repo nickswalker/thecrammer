@@ -51,11 +51,10 @@ Crammer.prototype.localStoreAnswer = function(answer) {
 		this.postAnswers(localStorage);
 	}
 }
-Crammer.prototype.choiceMade = function(index, isCorrect, isSlow) {
+Crammer.prototype.choiceMade = function(index, isCorrect) {
 	answer = {
 		index: index,
 		correct: isCorrect,
-		slow: isSlow
 	}
 	this.localStoreAnswer(answer);
 }

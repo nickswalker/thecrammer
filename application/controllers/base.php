@@ -12,9 +12,6 @@ class Base_Controller extends Controller {
 	 public function __construct()
 {
     //Assets
-    Asset::add('timer', 'js/timer.js');
-    Asset::add('stats', 'js/stats.js');
-    Asset::add('model', 'js/model-interaction.js');
     Asset::add('style', 'css/style.css');
     
     parent::__construct();
