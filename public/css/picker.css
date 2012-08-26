@@ -1,0 +1,54 @@
+.form	{
+	margin-bottom: 24px;
+}
+.recent	{
+	margin-bottom: 24px;
+}
+.recent li	{
+	cursor: pointer;
+}
+.recent	li::after{
+	content: attr(data-description);
+	color: rgba(0,0,0,.05);
+	-webkit-transition: .2s all ease;
+	margin-left: 10px;
+}
+.recent	li:hover::after{
+	content: attr(data-description);
+	color: rgba(0,0,0,.2);
+}
+#set, #go	{
+	font-family:inherit;
+	font-size:24px;
+	line-height:24px;
+	padding:3px 4px 2px 4px;
+	height:48px;
+	overflow:visible;
+	display: inline-block;
+	box-sizing: border-box;
+	width: auto;
+	vertical-align: top;
+	border: 1px solid rgba(0,0,0,.2);
+	box-shadow: none;
+	font-weight: 200;
+}
+input#set {
+	
+	margin-right: 12px;
+}
+
+#go{
+	background-color: transparent;
+	border: 1px solid rgba(0,0,0,.2);
+	/* border-radius: 5px; */
+	font-weight: 200;
+	color: rgba(0,0,0,.2);
+	margin: 0px 0 0 0 ;
+	text-decoration: none;
+	padding-top: 10px;
+	
+}
+#go.active{
+	cursor: pointer;
+	pointer-events: all;
+}
