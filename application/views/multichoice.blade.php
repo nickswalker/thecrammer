@@ -10,7 +10,7 @@
 		<li class="correct-count" data-counter="0">0</li>
 		<li class="slow-count" data-counter="0">0</li>
 		<li class="incorrect-count" data-counter="0">0</li>
-		<li class="set-info"><a href="stats/">?</a></li>
+		<li class="set-info"><a href="/{{ $setID }}">?</a></li>
 		<li class="home"><a href="/">H</a></li>
 	</ul>
 	<div id="content">

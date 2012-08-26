@@ -32,7 +32,8 @@ class Picker_Controller extends Base_Controller {
 
 	public function action_index()
 	{
-		return View::make('picker');
+		$data['recentlyStudied'] = Filehelper::get_dir_file_info('xmlcache');
+		return View::make('picker', $data);
 	}
 
 }

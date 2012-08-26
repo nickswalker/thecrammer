@@ -6,7 +6,6 @@ class Base {
 		foreach ($answers as $answer){
 			$index = (int)$answer['index'];
 			$correct = $answer['correct'];
-			$slow = $answer['slow'];
 			//If correct, increment the counter for that term
 			if($correct =='false'){
 				--$this->vars['terms_xml']->term[$index]->counter;

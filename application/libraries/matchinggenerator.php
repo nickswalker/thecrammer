@@ -2,7 +2,7 @@
 class MatchingGenerator {
 	function generateQuestions($numberOfQuestions = 1, $termsXML){
 		
-		$numberOfQuestions= 10;
+		$numberOfQuestions= 26;
 		$temp_questions_array = array();
 		$temp_indexes_array = array();
 		for($i=1; $i<=$numberOfQuestions; $i++){

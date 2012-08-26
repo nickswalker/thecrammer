@@ -31,7 +31,9 @@
 |		});
 |
 */
-Route::get('multichoice/(:any)/stats', 'stats@index');
+Route::get('(:any)', 'stats@index');
+Route::post('postanswers/(:any)', 'postanswers@index');
+
 Route::post('multichoice/(:any)/postanswers', 'multichoice@postAnswers');
 Router::register(array('GET', 'POST'), 'multichoice/(:any)/getquestions', 'multichoice@getQuestions');
 Route::get('multichoice/(:any)', 'multichoice@index');

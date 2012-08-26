@@ -1,7 +1,7 @@
 @layout('layouts/main')
 @section('content')
 	<h1>stats</h1>
-	<a href="../">back to set...</a>
+
 	<h2>total</h2>
 	{{ $stats['total'] }}
 	<h2>easiest</h2>

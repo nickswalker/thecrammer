@@ -35,6 +35,7 @@ visibility: hidden;
 	-webkit-transition-property:border,opacity;
 	-webkit-transition-duration:.2s,.2s;
 	opacity:.2;
+	overflow: auto;
 }
 
 .test h1 {

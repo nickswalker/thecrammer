@@ -24,7 +24,10 @@ body	{
 	font: inherit;
 		font-size: 24px;
 	font-weight: 500;
-	text-align: center;
+	text-align: right;
+	outline: none;
+	padding-right: 8px;
+	background-color: transparent;
 }
 .questions span	{
 	display: inline-block;
@@ -41,6 +44,9 @@ body	{
 	min-height: 48px;
 	box-sizing: border-box;
 	padding: 5px 0;
+}
+.answers li	{
+	-webkit-transition: .2s all;
 }
 .questions li	{
 	min-height: 48px;
@@ -71,4 +77,8 @@ b	{
 }
 .used	{
 	opacity: .2;
+}
+input.no-match 	{
+	border-color: #FFD400;
+	color: #FFD400;
 }

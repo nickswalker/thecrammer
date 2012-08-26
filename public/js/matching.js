@@ -1,9 +1,7 @@
-function Matching(setID, setTitle) {
-	this.setTitle = setTitle;
+function Matching(setID) {
 	this.setID = setID;
 	this.numberOfLocalAnswers = localStorage.length || 0;
 	this.numberOfLocalQuestions = 0;
-	document.title = this.setTitle + " | the crammer";
 }
 Matching.prototype.localStoreAnswer = function(answer) {
 	localStorage[this.numberOfLocalAnswers] = JSON.stringify(answer);
@@ -66,7 +64,7 @@ Matching.prototype.postAnswers = function(localStore) {
 	console.log(data);
 	$.ajax({
 		type: "POST",
-		url: "/multichoice/" + self.setID + "/postanswers",
+		url: "/postanswers/" + self.setID ,
 		data: data,
 		dataType: "text",
 		success: function(returnedObject) {

@@ -3,7 +3,7 @@
 <?php Asset::container('header')->add('matching.js', 'js/matching.js'); ?>
 <?php Asset::container('header')->add('matching.css', 'css/matching.css'); ?>
 
-<body data-set="{{ $setID }}" data-numer="26" data-settitle="{{ $setTitle }}" data-setdescription="{{ $setDescription }}">
+<body data-set="{{ $setID }}" data-number="10" data-settitle="{{ $setTitle }}" data-setdescription="{{ $setDescription }}">
 	<div id="content">
 	<ul class="questions">
 	@foreach($questions as $question)
@@ -28,18 +28,27 @@
 	</div>
 <script>
 	$(document).ready(function(){
-		matching = new Matching;
+		$crammerData = $(document.body).data();
+		document.title = $crammerData.settitle + " | the crammer";
+		matching = new Matching($crammerData.set);
 		$('.done').on('click', function(){
 			matching.grade();
 		});
 		$('input').bind('input', function() { 
 		$('.answers li').removeClass();
-			console.log('run');
 			$('input').each(function(index) {
 				$input = $(this).val();
-				console.log($input);
+				$(this).removeClass();
+				if($input.length){
+					
+					$success = $('li[data-key="'+ $input +'"]').addClass('used');
+					
+					if ( !$success.length ){
+						$(this).addClass('no-match');
+					}
+				}
 				
-				$('.answers li[data-key="'+ $input +'"]').toggleClass('used');
+				
 			});
 			
 		});
