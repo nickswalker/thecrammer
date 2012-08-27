@@ -38,24 +38,18 @@ class Matching_Controller extends Base_Controller {
 		$data['setTitle'] = $setVars['set_title'];
 		$data['setDescription'] = $setVars['set_description'];
 		
-		$generator = new MatchingGenerator;
-		$temp_matching = $generator->generateQuestions(26, $setVars['set_xml']->terms  );
-		$data['questions'] = $temp_matching;
+		
 		return View::make('matching', $data);
 	}
 	public function action_getQuestions($set){
 	
 		$model = new Base;
 		$setVars = $model->setVars($set);
-			
-		$generator = new QuestionGenerator;
-		$data['questions'] = $generator->generateQuestions( (int)Input::get('questions'), (int)Input::get('choices'), $setVars['set_xml']->terms );
-		/*
-echo '<pre>';
-		print_r($data['questions']);
-		echo '</pre>';
-*/
-		return View::make('multichoicequestions', $data);
+		
+		$generator = new MatchingGenerator;
+		$temp_matching = $generator->generateQuestions(26, $setVars['set_xml']->terms  );
+		$data['questions'] = $temp_matching;
+		return View::make('matchingquestions', $data);
 
 	}
 	public function action_postAnswers($set){

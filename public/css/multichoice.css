@@ -85,62 +85,6 @@ visibility: hidden;
 	font-size: 12px;
 	
 }
-/* = Stats
--------------------------------------------------------------- */
-	.stats{
-		display: block;
-		position: static;
-		padding: 0;
-		left: 0;
-		padding: 0 0 0 32px;
-		margin-bottom: 12px;
-		
-	}
-	.stats .home	{
-	float: right;
-}
-.stats a	{
-	text-decoration: none;
-}
-.stats li {
-	padding:0 5px;
-	border:1px solid rgba(0,0,0,.075);
-	color:rgba(0,0,0,.2);
-	text-shadow:none;
-	border-radius:3px;
-	line-height:1.5;
-	font-weight:200;
-	margin-right:5px;
-	display:inline-block;
-	-webkit-transition:all .2s;
-	vertical-align:top;
-}
-
-.stats li.correct-count {
-	border-color:#BADA55;
-	color:#BADA55;
-}
-
-.stats li.incorrect-count {
-	border-color:#da5555;
-	color:#da5555;
-	cursor:pointer;
-}
-
-.stats li.slow-count {
-	border-color:#FFD400;
-	color:#FFD400;
-	cursor:pointer;
-}
-
-.stats .activated {
-	margin-top:12px;
-}
-/*
-.stats li::before	{
-	content: attr(data-counter);
-}
-*/
 
 
 /* = Media Queries

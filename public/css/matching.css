@@ -1,8 +1,21 @@
 body	{
 	width: 600px;
+	overflow: hidden;
 }
 #content	{
 	overflow: auto;
+	width: 5000px;
+	-webkit-transition: .2s all;
+}
+body::before {
+	width:100%;
+	height:100%;
+	display:block;
+	position:absolute;
+	content:'';
+	pointer-events:none;
+	background-image:-webkit-linear-gradient(left,#fff -150px,rgba(255,255,255,0) 0px), -webkit-linear-gradient(right,#fff -150px,rgba(255,255,255,0) 0px);
+	z-index:1;
 }
 .questions	{
 	float: left;
@@ -40,7 +53,7 @@ body	{
 	
 }
 .answers li	{
-	width: 300px;
+	width: 330px;
 	min-height: 48px;
 	box-sizing: border-box;
 	padding: 5px 0;
@@ -55,13 +68,30 @@ body	{
 	width: 100%;
 	
 }
-.done	{
-	border: 1px solid rgba(0,0,0,.2);
+
+/* = Controls
+-------------------------------------------------------------- */
+
+button	{
 	background-color: transparent;
 	font: inherit;
-	cursor: pointer; 
+	cursor: pointer;
+	border: none;
+	font-weight: 500;
 }
-
+.left	{
+	float: left;
+}
+.right	{
+	float: right;
+}
+.done	{
+	margin-left: 250px;
+}
+button[disabled]	{
+	opacity: .2;
+	cursor: default;
+}
 .correct input	{
 	color: #BADA55;
 	border-color: #BADA55;
@@ -81,4 +111,12 @@ b	{
 input.no-match 	{
 	border-color: #FFD400;
 	color: #FFD400;
+}
+#storage	{
+	display: none;
+}
+.test	{
+	display: inline-block;
+	float: left;
+	width: 600px;
 }

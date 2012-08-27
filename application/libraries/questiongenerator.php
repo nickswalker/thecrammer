@@ -1,7 +1,6 @@
 <?php
 class QuestionGenerator {
 	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 4, $termsXML){
-		$numberOfQuestions= 10;
 		$temp_questions_array = array();
 		if($numberOfChoices == '' || !is_numeric($numberOfChoices)){
 			$numberOfChoices = 4;

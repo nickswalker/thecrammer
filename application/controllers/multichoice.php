@@ -30,13 +30,14 @@ class Multichoice_Controller extends Base_Controller {
 	|
 	*/
 
-	public function action_index($set)
+	public function action_index($set, $choices = 4)
 	{
 		$model = new Base;
 		$setVars = $model->setVars($set);
 		$data['setID'] = $setVars['set'];
 		$data['setTitle'] = $setVars['set_title'];
 		$data['setDescription'] = $setVars['set_description'];
+		$data['choices'] = $choices;
 		return View::make('multichoice', $data);
 	}
 	public function action_getQuestions($set){
