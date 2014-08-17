@@ -1,0 +1,62 @@
+/* = Stat page
+-------------------------------------------------------------- */
+.stat-box	{
+	padding: 10px 20px;
+	box-sizing: border-box;
+	background-color: rgba(0,0,0,.05);
+	display: inline-block;
+	margin-bottom: 24px;
+	width: 48%;
+	margin-right: 2%;
+	
+}
+.stat-box:nth-of-type(even)	{
+	margin-right: 0;
+}
+.stat-box span	{
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	font-style: italic;
+	
+}
+.stat-box .stat	{
+	font-size: 36px;
+	font-style: normal;
+	font-weight: 500;
+	
+}
+.left	{
+	float: left;
+}
+.right	{
+	float: right;
+}
+.difficulty	{
+	width: 100%;
+}
+
+/*--- = Word List  */
+.word-list	{
+	width: 48%;
+}
+.word-list	{
+	margin-right: 2%;
+}
+.word-list li	{
+	box-sizing: border-box;
+	padding: 3px 10px 0 10px;
+	height: 36px;
+	font-size: 18px;
+	background-color: rgba(0,0,0,.05);
+	margin-bottom: 12px;
+}
+.word-list li:nth-of-type(even)	{
+	margin-right: 0;
+}
+.word-list li::after	{
+	content: attr(counter);
+	float: right;
+	font-style: italic;
+	opacity: .2;
+}

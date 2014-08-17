@@ -1,4 +1,5 @@
 <?php
+namespace Libraries;
 class Base {
 	var $vars;
 	var $cacheDir = 'xmlcache/';
@@ -17,11 +18,12 @@ class Base {
 
 
 		}
-		$this->vars['set_xml']->asXML('xmlcache/'.$this->vars['set'].'.xml');
+		$this->vars['set_xml']->asXML('../xmlcache/'.$this->vars['set'].'.xml');
 	}
 	function pickSet($id){
 		$this->vars['set'] = $id;
-		$cacheDir = 'xmlcache/';
+		$cacheDir = '../xmlcache/';
+		$terms = '';
 		if( file_exists($cacheDir.$this->vars['set'].'.xml') ){
 			$set_xml = simplexml_load_file($cacheDir.$this->vars['set'].'.xml');
 			$this->vars['set_xml'] = $set_xml;
@@ -39,7 +41,7 @@ class Base {
 			}
 
 			if ( $json = json_decode($res) ) {
-				$terms= $json->terms;
+				$terms = $json->terms;
 			}
 			else{
 				throw new Exception("Couldn't fetch the set");
@@ -47,7 +49,7 @@ class Base {
 			}
 
 			$xmlstr = "<?xml version='1.0' ?><set><details></details><terms></terms></set>";
-			$set_xml = new SimpleXMLElement($xmlstr);
+			$set_xml = new \SimpleXMLElement($xmlstr);
 			$title_xml = $set_xml->details->addChild('title');
 			$description_xml = $set_xml->details->addChild('description');
 			$set_xml->details->title = (string)$json->title;

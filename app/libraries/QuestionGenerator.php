@@ -1,4 +1,5 @@
 <?php
+namespace Libraries;
 class QuestionGenerator {
 	function generateQuestions($numberOfQuestions = 1, $numberOfChoices = 4, $termsXML){
 		$temp_questions_array = array();
